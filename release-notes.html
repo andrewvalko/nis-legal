@@ -5,32 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>What's New — NIS Tracker</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 640px; margin: 0 auto; padding: 24px 16px; color: #1a2a3a; line-height: 1.7; }
-        h1 { font-size: 1.5rem; margin-bottom: 4px; }
-        h2 { font-size: 1.15rem; margin-top: 2em; margin-bottom: 0.3em; }
-        .updated { color: #666; font-size: 0.9rem; margin-bottom: 2em; }
-        p { margin: 0.6em 0; }
-        .section { margin-bottom: 1.5em; }
-        .banner { width: 100%; border-radius: 12px 12px 0 0; display: block; margin-bottom: 0; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            color: #1a2a3a;
+            line-height: 1.6;
+            background: #f0f6fa;
+        }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+            color: #0d2137;
+        }
+        .period-label {
+            display: inline-block;
+            color: #fff;
+            background: linear-gradient(135deg, #1a7ab5, #2a9d8f);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin: 2em 0 1em;
+            letter-spacing: 0.02em;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 480px) {
+            .card-grid { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border: 1px solid rgba(26,122,181,0.08);
+            transition: box-shadow 0.15s;
+        }
+        .card:hover {
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+        .card.wide {
+            grid-column: 1 / -1;
+        }
+        .card h3 {
+            font-size: 0.95rem;
+            margin: 0 0 6px;
+            color: #0d2137;
+        }
+        .card p {
+            font-size: 0.85rem;
+            margin: 0;
+            color: #3a5068;
+            line-height: 1.55;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 8px;
+            margin-left: 6px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+            letter-spacing: 0.03em;
+        }
+        .badge-new {
+            background: #d4f5e9;
+            color: #1a7a5a;
+        }
+        .badge-updated {
+            background: #dbeafe;
+            color: #1a5fb5;
+        }
+        .banner { width: 100%; border-radius: 16px 16px 0 0; display: block; margin-bottom: 0; }
+        .how-to-test {
+            background: #fff;
+            border-radius: 0 0 16px 16px;
+            padding: 18px 22px;
+            margin-top: 0;
+            margin-bottom: 2em;
+            border: 1px solid rgba(26,122,181,0.08);
+            border-top: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .how-to-test h2 {
+            font-size: 1.05rem;
+            margin: 0 0 10px;
+            color: #0d2137;
+        }
+        .how-to-test p { margin: 0.5em 0; font-size: 0.9rem; }
+        .how-to-test ol { padding-left: 1.2em; font-size: 0.9rem; }
+        .how-to-test li { margin-bottom: 4px; }
+        .how-to-test a { color: #1a7ab5; }
+        .divider {
+            border: none;
+            border-top: 1px solid #d6e3ed;
+            margin: 2em 0 0.5em;
+        }
     </style>
 </head>
 <body>
     <img src="banner.png" class="banner" alt="NIS Tracker">
 
-    <div class="section" style="background: #e8f4fd; border-radius: 0 0 12px 12px; padding: 16px 20px; margin-top: 0; margin-bottom: 2em;">
-        <h2 style="margin-top: 0;">How to test</h2>
+    <div class="how-to-test">
+        <h2>How to test</h2>
         <p><strong>iPhone:</strong></p>
-        <ol style="padding-left: 1.2em;">
+        <ol>
             <li>Install <a href="https://apps.apple.com/app/testflight/id899247664">TestFlight</a> from the App Store</li>
             <li>Tap <a href="https://testflight.apple.com/join/YTQfPXec">this link</a> to install NIS Tracker</li>
             <li>Open NIS Tracker and tap "Sign Up" to create an account with your email</li>
             <li>When prompted, enter the invite code Andrew shared on WhatsApp to bypass the approval process</li>
         </ol>
         <p><strong>Android:</strong></p>
-        <ol style="padding-left: 1.2em;">
+        <ol>
             <li>Download <a href="https://github.com/andrewvalko/nis-legal/releases/download/v1.5.4/NIS-Tracker-v1.5.4.apk">the NIS Tracker app</a></li>
             <li>Open the file to install NIS Tracker
-                <ul style="padding-left: 1.2em; margin-top: 4px;"><li>If prompted, tap "Allow" or go to Settings → "Allow from this source", then tap Install</li></ul>
+                <ul style="padding-left: 1.2em; margin-top: 4px;"><li>If prompted, tap "Allow" or go to Settings &rarr; "Allow from this source", then tap Install</li></ul>
             </li>
             <li>Open NIS Tracker and tap "Sign Up" to create an account with your email</li>
             <li>When prompted, enter the invite code Andrew shared on WhatsApp to bypass the approval process</li>
@@ -39,154 +136,151 @@
 
     <h1>What's New</h1>
 
-    <p class="updated">Mid-April 2026</p>
+    <span class="period-label">Mid-April 2026</span>
 
-    <div class="section">
-        <h2>@Mentions</h2>
-        <p>Type <strong>@</strong> in a comment or in your swim notes to tag a club member. Pick them from the list, and they'll get notified that you mentioned them. Their name shows up bold inline so it's easy to spot who's being talked to.</p>
+    <div class="card-grid">
+        <div class="card">
+            <h3>@Mentions</h3>
+            <p>Type <strong>@</strong> in a comment or swim notes to tag a club member. They get notified and their name shows up bold inline.</p>
+        </div>
+
+        <div class="card">
+            <h3>Edit your swims</h3>
+            <p>Tap the menu on any of your swims to edit. Notes, buddies, and photos can change any time. Stats lock after 24 hours to protect leaderboards.</p>
+        </div>
+
+        <div class="card">
+            <h3>Live comments <span class="badge badge-new">New!</span></h3>
+            <p>Comments update in real time. If someone replies while you're looking at a swim or event, it just appears. Comment counts on the feed update live too.</p>
+        </div>
+
+        <div class="card">
+            <h3>Smarter notifications</h3>
+            <p>Get pinged when someone joins a comment thread you're in. Mentions take priority so you won't get doubled up. New toggles in Settings let you tune it.</p>
+        </div>
+
+        <div class="card">
+            <h3>New swim fields</h3>
+            <p>Warm-up/sauna time and real feel temperature. Real feel appears when you toggle air temp on. Both show on the swim detail view.</p>
+        </div>
+
+        <div class="card">
+            <h3>Club achievements</h3>
+            <p>When a swim earns a club achievement, the badge shows as a chip in the Club summary card header. Tap it to jump to the swim.</p>
+        </div>
+
+        <div class="card wide">
+            <h3>Polish <span class="badge badge-updated">Updated!</span></h3>
+            <p>Mentions show bold in feed comments. Bigger tap targets on the swim log form. Events show host and attendee count. Fist-bump lists use compact chips. Club totals only count official Sandkaj swims.</p>
+        </div>
     </div>
 
-    <div class="section">
-        <h2>Edit your swims</h2>
-        <p>Tap the menu on any of your swims and hit Edit. Notes, buddies, and photos can be changed any time. Stats like distance, temperature, and duration can be corrected within the first 24 hours — after that they lock to keep leaderboards and club records consistent.</p>
+    <hr class="divider">
+
+    <span class="period-label">Early April 2026</span>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>Better feed cards</h3>
+            <p>Swim notes show up top now. Duration on the right. Buddies truncate to two names + count. Social buttons are plain icons, not chunky chips.</p>
+        </div>
+
+        <div class="card">
+            <h3>Events in the feed</h3>
+            <p>Comments inline below event cards. RSVP and comment count in their own row. Mini-event previews are tighter — day, time, title.</p>
+        </div>
+
+        <div class="card">
+            <h3>Air temp &amp; water time</h3>
+            <p>Two new optional fields. Air temp behind a snowflake toggle, water time behind a clock. Water time counts for charts and leaderboards.</p>
+        </div>
+
+        <div class="card">
+            <h3>Private swims</h3>
+            <p>Lock icon on the swim log marks a swim as private. Still counts for your stats and achievements, just hidden from the club feed.</p>
+        </div>
+
+        <div class="card">
+            <h3>Redesigned forms</h3>
+            <p>Swim log and event creation got a visual overhaul — cleaner card-based layout, more logical grouping. Same fields, easier to use.</p>
+        </div>
+
+        <div class="card">
+            <h3>Inline comments</h3>
+            <p>Latest comments show directly on swim cards in the feed — no need to tap into the detail view to see the conversation.</p>
+        </div>
+
+        <div class="card">
+            <h3>Announcements</h3>
+            <p>Bold and italic support. 2000-char limit with live counter. Long ones truncate with "show more". Write-in swim buddies for non-members.</p>
+        </div>
+
+        <div class="card">
+            <h3>Profile</h3>
+            <p>Consistent white background across all tabs. Reshuffled to Achievements, Stats, Streak, Activity. About and Legal moved to Help &amp; FAQ.</p>
+        </div>
+
+        <div class="card wide">
+            <h3>Polish &amp; bug fixes</h3>
+            <p>System fonts on both platforms. Consistent spacing everywhere. Card borders gone on Android. No more trailing dots on display names. Full Danish translation pass. Avatar updates reflect everywhere. Keyboard no longer covers text fields.</p>
+        </div>
     </div>
 
-    <div class="section">
-        <h2>Live comments <span style="color: #2a9d8f; font-size: 0.75em; font-weight: 600;">New!</span></h2>
-        <p>Comments update in real time — if someone replies while you're looking at a swim or event, it just appears. No pulling to refresh or navigating back and forth. Comment counts on the feed update live too.</p>
+    <hr class="divider">
+
+    <span class="period-label">March 2026</span>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>Dark mode</h3>
+            <p>Follows your phone's system setting. Every screen, chart, and card — all adapted.</p>
+        </div>
+
+        <div class="card">
+            <h3>Swim photos</h3>
+            <p>Attach a photo when logging a swim. Shows as a hero image on your feed card. Tap "Add photo", pick an image, done.</p>
+        </div>
+
+        <div class="card">
+            <h3>Profile photos</h3>
+            <p>Tap your avatar to upload a real photo. Replaces the colored circle everywhere — feed, comments, leaderboards.</p>
+        </div>
+
+        <div class="card">
+            <h3>Achievements</h3>
+            <p>Earned badges show on your profile in a grid. Others can see them too. Progress bar for the next unlock.</p>
+        </div>
+
+        <div class="card">
+            <h3>New stats tab</h3>
+            <p>Four charts: trends, temperature correlations, progression, and a heatmap. Tap any data point for details. Filter by time period.</p>
+        </div>
+
+        <div class="card">
+            <h3>Events</h3>
+            <p>Events on your feed with one-tap RSVP. Weekly look-ahead strip. Cleaner cards with better time display and organizer chips.</p>
+        </div>
+
+        <div class="card">
+            <h3>Speed</h3>
+            <p>Stats load from pre-computed server data. Caching for near-instant repeat visits. Noticeably snappier overall.</p>
+        </div>
+
+        <div class="card">
+            <h3>Danish</h3>
+            <p>Follows your phone's language. Labels, achievements, dates, plurals — everything in Danish.</p>
+        </div>
+
+        <div class="card">
+            <h3>Haptic feedback</h3>
+            <p>A little buzz on fist-bumps, logging swims, and unlocking achievements. Makes everything feel more responsive.</p>
+        </div>
+
+        <div class="card wide">
+            <h3>Design &amp; everything else</h3>
+            <p>Inbox readability upgrade. Consistent typography across events and feed. Welcome screen for new members. Help topics throughout. Better keyboard handling. Lots of small fixes on both platforms.</p>
+        </div>
     </div>
 
-    <div class="section">
-        <h2>Smarter comment notifications</h2>
-        <p>If you've commented on a swim, you'll now get pinged when someone else joins the thread — no more missing the back-and-forth. Mentions take priority over thread replies, so you won't get doubled up. New toggles in Settings → Notifications let you turn mentions and thread replies on or off independently.</p>
-    </div>
-
-    <div class="section">
-        <h2>New swim fields</h2>
-        <p>Two new optional fields when logging a swim: warm-up/sauna time and real feel temperature. Real feel appears automatically when you toggle air temp on. Both show on the swim detail view when filled in.</p>
-    </div>
-
-    <div class="section">
-        <h2>Club achievements in the feed</h2>
-        <p>When a swim earns a club achievement, the badge now shows as a tappable chip in the Club summary card header for that day. Tap it to jump straight to the swim.</p>
-    </div>
-
-    <div class="section">
-        <h2>Polish <span style="color: #2a9d8f; font-size: 0.75em; font-weight: 600;">Updated!</span></h2>
-        <p>Mentions show up bold in feed comments, not just on the detail view. Tap targets on the swim log form are bigger — labels and units are tappable now, not just the number field. Upcoming events on the feed show the host and attendee count. Fist-bump lists use compact chips. Club totals only count official Sandkaj swims. Comments no longer flash when returning to the feed.</p>
-    </div>
-
-    <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 2em 0;">
-
-    <p class="updated">Early April 2026</p>
-
-    <div class="section">
-        <h2>Better feed cards</h2>
-        <p>Swim notes show up top now — the thing you actually wrote is the first thing people read. Duration sits on the right side of the metadata row where it's easy to scan. If you swam with a crowd, buddies truncate to two names + a count instead of a wall of text. Social buttons are plain icons now, not chunky chips.</p>
-    </div>
-
-    <div class="section">
-        <h2>Events in the feed</h2>
-        <p>Comments show inline below event cards, same as swim posts. RSVP and the comment count live outside the card in their own row. The mini-event previews on the swim feed are way tighter — day and time on the left, title on the right, just the essentials.</p>
-    </div>
-
-    <div class="section">
-        <h2>Air temp and water time</h2>
-        <p>Two new optional fields when logging a swim. Air temperature hides behind a snowflake toggle, total water time behind a clock. When you enter water time, that's what shows on your feed card and what counts for the Temp x Time chart and Total Time leaderboard — swim duration still drives pace calculations.</p>
-    </div>
-
-    <div class="section">
-        <h2>Private swims</h2>
-        <p>Tap the lock icon on the swim log to mark a swim as private. It still counts toward your stats and achievements, but it won't appear on the club feed.</p>
-    </div>
-
-    <div class="section">
-        <h2>Redesigned forms</h2>
-        <p>The swim log and event creation forms got a visual overhaul — cleaner card-based layout with everything grouped more logically. Same fields, just easier to use.</p>
-    </div>
-
-    <div class="section">
-        <h2>Inline comments</h2>
-        <p>The latest comments now show directly on swim cards in the feed — no need to tap into the detail view to see what people are saying.</p>
-    </div>
-
-    <div class="section">
-        <h2>Announcements</h2>
-        <p>Club announcements support bold and italic now. There's a 2000-character limit with a live counter, and long announcements truncate at five lines with a "show more" toggle. You can also tag people who aren't club members as swim buddies via write-in names.</p>
-    </div>
-
-    <div class="section">
-        <h2>Profile</h2>
-        <p>All three profile tabs look the same now — white background, consistent cards. Section order reshuffled to Achievements, Stats, Streak, Activity. About and Legal moved to Help & FAQ where they make more sense.</p>
-    </div>
-
-    <div class="section">
-        <h2>Polish</h2>
-        <p>Back to system fonts on both platforms — they just look better. Consistent spacing between section headers and content everywhere. Card borders gone on Android. Display names no longer show a trailing dot when someone has no last name. Full Danish translation pass — 39+ strings added.</p>
-    </div>
-
-    <div class="section">
-        <h2>Bug fixes</h2>
-        <p>Avatar updates now reflect everywhere in the app. The keyboard no longer covers text fields when typing comments or notes. Fixed a navigation issue when viewing swims from your profile. Improved text contrast on the sign-up screen.</p>
-    </div>
-
-    <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 2em 0;">
-
-    <p class="updated">March 2026</p>
-
-    <div class="section">
-        <h2>Dark mode</h2>
-        <p>The app follows your phone's system setting. If your phone is in dark mode, NIS Tracker is too. Every screen, every chart, every card — all adapted.</p>
-    </div>
-
-    <div class="section">
-        <h2>Swim photos</h2>
-        <p>You can now attach a photo when logging a swim. It shows up as a big hero image on your feed card — makes scrolling through the feed way more fun. Tap "Add photo" on the log screen, pick an image, done.</p>
-    </div>
-
-    <div class="section">
-        <h2>Profile photos</h2>
-        <p>Tap your avatar on your profile to upload a real photo. It replaces the colored circle everywhere — feed cards, comments, leaderboards, the works. Or keep the initials if you prefer.</p>
-    </div>
-
-    <div class="section">
-        <h2>Achievements on your profile</h2>
-        <p>Your earned achievement badges now show on your profile in a grid. Other members can see them too when they visit your profile. There's also a progress bar showing which achievement you're closest to unlocking next.</p>
-    </div>
-
-    <div class="section">
-        <h2>Haptic feedback</h2>
-        <p>The app now gives you a little buzz when you fist-bump someone's swim, log a swim, or unlock an achievement. Small thing, but it makes everything feel more responsive.</p>
-    </div>
-
-    <div class="section">
-        <h2>New stats tab</h2>
-        <p>Four new charts: swim trends over time, temperature vs. distance correlations, distance progression, and a heatmap showing when you swim most. Tap any data point for details. Filter by time period with the chips at the top.</p>
-    </div>
-
-    <div class="section">
-        <h2>Events improvements</h2>
-        <p>Upcoming events now show on your feed with one-tap RSVP. The events tab has a weekly look-ahead strip so you can see what's coming at a glance. Event cards got a visual refresh — cleaner layout, better time display, organizer shown as a chip.</p>
-    </div>
-
-    <div class="section">
-        <h2>Speed</h2>
-        <p>Stats load from pre-computed data on the server now instead of crunching every swim on your phone. There's caching underneath so repeat visits are near-instant. The whole app should feel noticeably snappier.</p>
-    </div>
-
-    <div class="section">
-        <h2>Danish language support</h2>
-        <p>The app follows your phone's language setting. Set your phone to Danish and everything — labels, achievements, dates, plurals — shows in Danish.</p>
-    </div>
-
-    <div class="section">
-        <h2>Design polish</h2>
-        <p>The Inbox got a readability upgrade — larger text, bigger avatars, more breathing room between notifications. Events and the swim feed now use consistent typography and sizing. Time formatting follows your language (English shows "9 am", Danish shows "09:00"). Lots of small visual tweaks across both platforms.</p>
-    </div>
-
-    <div class="section">
-        <h2>Everything else</h2>
-        <p>Welcome screen for new members. Help topics throughout the app. Privacy controls for private swims. Improved event creation. Better keyboard handling. Lots of small fixes across both iOS and Android.</p>
-    </div>
 </body>
 </html>
