@@ -180,6 +180,11 @@
     </div>
     <script>
         function selectPlatform(platform, tab) {
+            if (tab.classList.contains('active')) {
+                tab.classList.remove('active');
+                document.getElementById('platform-' + platform).classList.remove('active');
+                return;
+            }
             document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
             tab.classList.add('active');
