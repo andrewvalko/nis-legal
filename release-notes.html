@@ -97,13 +97,52 @@
         }
         .how-to-test h2 {
             font-size: 1.05rem;
-            margin: 0 0 10px;
+            margin: 0 0 12px;
             color: #0d2137;
         }
-        .how-to-test p { margin: 0.5em 0; font-size: 0.9rem; }
         .how-to-test ol { padding-left: 1.2em; font-size: 0.9rem; }
         .how-to-test li { margin-bottom: 4px; }
         .how-to-test a { color: #1a7ab5; }
+        .platform-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .platform-tab {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #d6e3ed;
+            border-radius: 12px;
+            background: #f7fafc;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #3a5068;
+            cursor: pointer;
+            transition: all 0.15s;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .platform-tab:hover {
+            border-color: #1a7ab5;
+            color: #1a7ab5;
+        }
+        .platform-tab.active {
+            background: linear-gradient(135deg, #1a7ab5, #2a9d8f);
+            border-color: transparent;
+            color: #fff;
+        }
+        .platform-content {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+        .platform-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .divider {
             border: none;
             border-top: 1px solid #d6e3ed;
@@ -116,23 +155,37 @@
 
     <div class="how-to-test">
         <h2>How to test</h2>
-        <p><strong>iPhone:</strong></p>
-        <ol>
-            <li>Install <a href="https://apps.apple.com/app/testflight/id899247664">TestFlight</a> from the App Store</li>
-            <li>Tap <a href="https://testflight.apple.com/join/YTQfPXec">this link</a> to install NIS Tracker</li>
-            <li>Open NIS Tracker and tap "Sign Up" to create an account with your email</li>
-            <li>When prompted, enter the invite code Andrew shared on WhatsApp to bypass the approval process</li>
-        </ol>
-        <p><strong>Android:</strong></p>
-        <ol>
-            <li>Download <a href="https://github.com/andrewvalko/nis-legal/releases/download/v1.5.4/NIS-Tracker-v1.5.4.apk">the NIS Tracker app</a></li>
-            <li>Open the file to install NIS Tracker
-                <ul style="padding-left: 1.2em; margin-top: 4px;"><li>If prompted, tap "Allow" or go to Settings &rarr; "Allow from this source", then tap Install</li></ul>
-            </li>
-            <li>Open NIS Tracker and tap "Sign Up" to create an account with your email</li>
-            <li>When prompted, enter the invite code Andrew shared on WhatsApp to bypass the approval process</li>
-        </ol>
+        <div class="platform-tabs">
+            <div class="platform-tab" onclick="selectPlatform('iphone', this)" id="tab-iphone">iPhone</div>
+            <div class="platform-tab" onclick="selectPlatform('android', this)" id="tab-android">Android</div>
+        </div>
+        <div class="platform-content" id="platform-iphone">
+            <ol>
+                <li>Install <a href="https://apps.apple.com/app/testflight/id899247664">TestFlight</a> from the App Store</li>
+                <li>Tap <a href="https://testflight.apple.com/join/YTQfPXec">this link</a> to install NIS Tracker</li>
+                <li>Open NIS Tracker and tap "Sign Up" to create an account with your email</li>
+                <li>When prompted, enter the invite code Andrew shared on WhatsApp to bypass the approval process</li>
+            </ol>
+        </div>
+        <div class="platform-content" id="platform-android">
+            <ol>
+                <li>Download <a href="https://github.com/andrewvalko/nis-legal/releases/download/v1.5.4/NIS-Tracker-v1.5.4.apk">the NIS Tracker app</a></li>
+                <li>Open the file to install NIS Tracker
+                    <ul style="padding-left: 1.2em; margin-top: 4px;"><li>If prompted, tap "Allow" or go to Settings &rarr; "Allow from this source", then tap Install</li></ul>
+                </li>
+                <li>Open NIS Tracker and tap "Sign Up" to create an account with your email</li>
+                <li>When prompted, enter the invite code Andrew shared on WhatsApp to bypass the approval process</li>
+            </ol>
+        </div>
     </div>
+    <script>
+        function selectPlatform(platform, tab) {
+            document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById('platform-' + platform).classList.add('active');
+        }
+    </script>
 
     <h1>What's New</h1>
 
