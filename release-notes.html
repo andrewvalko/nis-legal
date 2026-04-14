@@ -192,6 +192,45 @@
     <h1>Release history</h1>
     <p class="intro">Each version lists what shipped in that Android release. iOS tracks the same cadence.</p>
 
+    <span class="period-label">v1.5.5</span>
+
+    <div class="card-grid">
+        <div class="card major">
+            <h3>Real-time everything</h3>
+            <p>Comments, reactions, photo uploads, avatars, unread counts, pending-approval badges, and upcoming events all update live via Firestore listeners. No more pull-to-refresh for normal updates.</p>
+        </div>
+        <div class="card major">
+            <h3>Multi-photo swims</h3>
+            <p>Up to 3 photos per swim. New peek carousel — current photo full-bleed with the next one peeking from the trailing edge (Strava-style). Edit-swim shows existing photos and lets you remove them; selection order is preserved.</p>
+        </div>
+        <div class="card">
+            <h3>Live swim &amp; detail updates</h3>
+            <p>Per-swim listeners on the feed and detail view pick up edits, reactions, and Cloud Function follow-ups (photo thumbnails) as they happen.</p>
+        </div>
+        <div class="card">
+            <h3>Pending-approval admin badges</h3>
+            <p>Admin shield in the toolbar gets a red badge when members are waiting for approval. Server-side notifications + cleanup when a user is approved.</p>
+        </div>
+        <div class="card">
+            <h3>Better upload feedback</h3>
+            <p>Photo uploads await inline with a visible "Saving photos…" toast. Avatar upload polling is tighter. Toast styles unified.</p>
+        </div>
+        <div class="card">
+            <h3>Mention bug fixes</h3>
+            <p>Mention boundary off-by-one fixed. Auto-capitalize after mentions no longer forced lowercase. Bold mention rendering on feed cards.</p>
+        </div>
+        <div class="card">
+            <h3>Skeleton → content fades</h3>
+            <p>Less abrupt snap when content loads on Feed and Events tabs.</p>
+        </div>
+        <div class="card">
+            <h3>Android feed scroll fix</h3>
+            <p>Feed no longer opens pre-scrolled past the Club summary on Android (regression).</p>
+        </div>
+    </div>
+
+    <hr class="divider">
+
     <span class="period-label">v1.5.4</span>
 
     <div class="card-grid">
