@@ -648,6 +648,167 @@
     .copy p { font-size: 18px; }
     .phone { width: 260px; }
   }
+
+  /* ───────────────────────────────────────────────────────────────
+     Mobile: ditch the slide-deck format and become a single scrolling
+     landing page. Each "slide" becomes a vertical section, ordered top
+     to bottom. Slide nav is hidden — natural scrolling replaces it.
+     ─────────────────────────────────────────────────────────────── */
+  @media (max-width: 800px) {
+    html, body {
+      overflow: auto;
+      height: auto;
+    }
+    body {
+      display: block;
+      background: var(--bg);
+    }
+    .deck {
+      overflow: visible;
+      flex: none;
+      height: auto;
+    }
+    .slide {
+      position: static;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transition: none;
+      padding: 56px 22px;
+      min-height: 0;
+      align-items: stretch;
+      justify-content: flex-start;
+      flex-direction: column;
+    }
+    .nav, .slide-name {
+      display: none !important;
+    }
+    .corner-mark {
+      position: static;
+      margin-bottom: 18px;
+    }
+
+    /* Cover */
+    .slide-cover {
+      padding: 72px 22px 56px;
+      align-items: center;
+      text-align: center;
+    }
+    .slide-cover .app-icon {
+      width: 128px;
+      height: 128px;
+      border-radius: 22.5%;
+      padding: 12px;
+      margin-bottom: 24px;
+    }
+    .slide-cover h1 { font-size: 52px; letter-spacing: -0.8px; }
+    .slide-cover .tag { font-size: 18px; margin-top: 12px; }
+    .slide-cover .by-line { margin-top: 32px; font-size: 13px; }
+
+    /* Section-style headers (pillars slide) */
+    .slide-section { padding: 56px 22px; align-items: center; text-align: center; }
+    .slide-section .eyebrow { font-size: 13px; letter-spacing: 2.5px; margin-bottom: 16px; }
+    .slide-section h2 { font-size: 36px; letter-spacing: -0.5px; line-height: 1.1; }
+    .slide-section .lede { font-size: 17px; margin-top: 18px; }
+
+    .pillars {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 32px;
+    }
+    .pillar { padding: 22px; }
+    .pillar h4 { font-size: 18px; }
+    .pillar p { font-size: 14px; }
+
+    /* Content slides — copy on top, phone mockup below */
+    .slide-content,
+    .slide-content.duo {
+      gap: 28px;
+      padding: 56px 22px;
+    }
+    .copy { max-width: none; align-self: stretch; }
+    .copy .eyebrow { font-size: 12px; letter-spacing: 2.5px; margin-bottom: 12px; }
+    .copy h3 { font-size: 30px; letter-spacing: -0.3px; line-height: 1.15; margin-bottom: 14px; }
+    .copy p { font-size: 16px; line-height: 1.5; }
+    .copy ul { margin-top: 6px; }
+    .copy li { font-size: 15px; padding: 6px 0 6px 26px; }
+    .copy li::before { width: 12px; height: 12px; top: 13px; }
+
+    .phone-stage { width: 100%; }
+    .phone {
+      width: 220px;
+      margin: 0 auto;
+      border-radius: 38px;
+      padding: 6px;
+    }
+    .phone::before {
+      top: 14px;
+      width: 78px;
+      height: 20px;
+    }
+    .phone img { border-radius: 32px; }
+
+    /* Privacy slide — already vertical, just tighten */
+    .slide-privacy { padding: 56px 22px; }
+    .slide-privacy .header { margin-bottom: 24px; }
+    .slide-privacy h2 { font-size: 32px; letter-spacing: -0.3px; }
+    .slide-privacy .lede { font-size: 16px; margin-top: 12px; }
+    .privacy-row {
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      padding: 18px 18px;
+      border-radius: 14px;
+    }
+    .privacy-row .num { width: 36px; height: 36px; font-size: 15px; }
+    .privacy-row h4 { font-size: 16px; }
+    .privacy-row p { font-size: 14px; }
+
+    /* Finance slide — stack table + sidebar; collapse cost rows */
+    .slide-finance { padding: 56px 22px; }
+    .slide-finance .header { margin-bottom: 24px; }
+    .slide-finance h2 { font-size: 32px; letter-spacing: -0.3px; }
+    .finance-grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .cost-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+      padding: 16px 18px;
+    }
+    .cost-row.head { display: none; }
+    .cost-row .what { font-size: 15px; }
+    .cost-row .cost {
+      font-size: 14px;
+      color: var(--ice-blue-strong);
+      font-weight: 700;
+    }
+    .cost-row .why { font-size: 13px; line-height: 1.45; margin-top: 2px; }
+    .cost-row.total { padding: 18px 18px; }
+    .cost-row.total .what { font-size: 17px; }
+    .cost-row.total .cost { font-size: 17px; color: var(--deep-navy); }
+    .cost-row.total .why { font-size: 13px; }
+
+    .finance-card { padding: 20px; }
+    .finance-card.hero .num { font-size: 42px; }
+    .finance-card.hero .num-tag { font-size: 14px; }
+    .finance-card h4 { font-size: 12px; letter-spacing: 1.5px; }
+    .finance-card p { font-size: 14px; }
+
+    /* Closing slide */
+    .slide-close {
+      padding: 64px 22px;
+      align-items: center;
+      text-align: center;
+    }
+    .slide-close h2 { font-size: 44px; letter-spacing: -0.5px; }
+    .slide-close .tag { font-size: 17px; margin-top: 16px; }
+    .slide-close .gratitude {
+      margin-top: 24px;
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 100%;
+    }
+  }
 </style>
 </head>
 <body>
