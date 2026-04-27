@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>NIS Tracker</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-navy: #142645;
+    --ice-blue: #8CC7F0;
+    --ice-blue-strong: #5BA8D9;
+    --frost: #F5F8FA;
+    --secondary: #6B7A90;
+    --divider: #E0E5EC;
+    --bg: #FFFFFF;
+    --shadow: 0 12px 40px rgba(20, 38, 69, 0.08);
+    --phone-shadow: 0 30px 60px rgba(20, 38, 69, 0.18), 0 6px 16px rgba(20, 38, 69, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--deep-navy);
+    font-family: 'DM Sans', -apple-system, system-ui, sans-serif;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .deck {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    background: var(--bg);
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Snowflake corner mark — subtle on every slide */
+  .corner-mark {
+    position: absolute;
+    top: 28px;
+    left: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--secondary);
+  }
+  .corner-mark .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--frost);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ice-blue-strong);
+    font-size: 16px;
+  }
+
+  /* Slide layouts */
+  .slide-cover {
+    background: linear-gradient(180deg, #E8F1FA 0%, #FFFFFF 60%);
+    flex-direction: column;
+    text-align: center;
+  }
+  .slide-cover .snowflake {
+    font-size: 92px;
+    color: var(--ice-blue-strong);
+    margin-bottom: 24px;
+  }
+  .slide-cover .app-icon {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 28px;
+    background: white;
+    /* iOS-style squircle: 22.5% radius matches Apple's home-screen mask. */
+    border-radius: 22.5%;
+    box-shadow: 0 24px 50px rgba(20, 38, 69, 0.20), 0 6px 14px rgba(20, 38, 69, 0.08);
+    padding: 18px;
+    object-fit: contain;
+  }
+  .slide-cover h1 {
+    font-size: 96px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1;
+  }
+  .slide-cover .tag {
+    font-size: 24px;
+    color: var(--secondary);
+    font-weight: 500;
+    margin-top: 18px;
+  }
+  .slide-cover .by-line {
+    margin-top: 56px;
+    font-size: 16px;
+    color: var(--secondary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .slide-section {
+    background: var(--frost);
+    flex-direction: column;
+    text-align: center;
+  }
+  .slide-section .eyebrow {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--ice-blue-strong);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .slide-section h2 {
+    font-size: 84px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    max-width: 1100px;
+  }
+  .slide-section .lede {
+    margin-top: 28px;
+    font-size: 26px;
+    color: var(--secondary);
+    max-width: 800px;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .slide-content {
+    align-items: stretch;
+    justify-content: center;
+    gap: 64px;
+  }
+
+  .copy {
+    flex: 1;
+    max-width: 560px;
+    align-self: center;
+  }
+  .copy .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--ice-blue-strong);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .copy h3 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+    margin-bottom: 20px;
+  }
+  .copy p {
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--deep-navy);
+    margin-bottom: 16px;
+  }
+  .copy ul {
+    list-style: none;
+    margin-top: 12px;
+  }
+  .copy li {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--deep-navy);
+    padding: 10px 0 10px 32px;
+    position: relative;
+  }
+  .copy li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 16px;
+    height: 16px;
+    background: var(--ice-blue);
+    border-radius: 50%;
+  }
+
+  /* Phone mockup */
+  .phone-stage {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1500px;
+  }
+  .phone {
+    width: 320px;
+    aspect-ratio: 9 / 19.5;
+    background: #1c1c1e;
+    border-radius: 50px;
+    padding: 8px;
+    box-shadow: var(--phone-shadow);
+    position: relative;
+  }
+  .phone::before {
+    /* notch */
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 26px;
+    background: #1c1c1e;
+    border-radius: 999px;
+    z-index: 2;
+  }
+  .phone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 42px;
+    display: block;
+  }
+
+  .phones-row {
+    display: flex;
+    gap: 36px;
+    align-items: center;
+    justify-content: center;
+  }
+  .phones-row .phone {
+    width: 260px;
+  }
+
+  /* Two phones side-by-side on a single slide */
+  .slide-content.duo {
+    gap: 80px;
+  }
+  .slide-content.duo .phone-stage .phone {
+    width: 290px;
+  }
+
+  /* Finance slide */
+  .slide-finance {
+    background: var(--frost);
+    flex-direction: column;
+    padding: 48px 80px;
+  }
+  .slide-finance .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .slide-finance .eyebrow {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--ice-blue-strong);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .slide-finance h2 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+  }
+  .finance-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 28px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+  .cost-table {
+    background: white;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .cost-row {
+    display: grid;
+    grid-template-columns: 1.4fr 0.7fr 2fr;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--divider);
+    align-items: start;
+    gap: 18px;
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-row.head {
+    background: var(--ice-blue);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 14px 24px;
+  }
+  .cost-row.total {
+    background: linear-gradient(180deg, #E8F1FA 0%, #DCEAF7 100%);
+    font-weight: 600;
+  }
+  .cost-row .what {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--deep-navy);
+  }
+  .cost-row .cost {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--deep-navy);
+    white-space: nowrap;
+  }
+  .cost-row.total .what,
+  .cost-row.total .cost {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--deep-navy);
+  }
+  .cost-row .why {
+    font-size: 14px;
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+  .cost-row.total .why {
+    font-size: 15px;
+    color: var(--deep-navy);
+    font-weight: 500;
+  }
+
+  .finance-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .finance-card {
+    background: white;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+  }
+  .finance-card.hero {
+    background: linear-gradient(180deg, var(--ice-blue) 0%, var(--ice-blue-strong) 100%);
+    color: white;
+  }
+  .finance-card.hero .num {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .finance-card.hero .num-tag {
+    font-size: 16px;
+    margin-top: 8px;
+    opacity: 0.92;
+  }
+  .finance-card h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .finance-card p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--deep-navy);
+  }
+  .finance-card.compare strong {
+    color: var(--deep-navy);
+    font-weight: 700;
+  }
+  .finance-card.compare .badge {
+    display: inline-block;
+    background: var(--ice-blue);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+  }
+
+  /* Closing slide */
+  .slide-close {
+    background: var(--deep-navy);
+    color: white;
+    flex-direction: column;
+    text-align: center;
+  }
+  .slide-close h2 {
+    font-size: 84px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: white;
+  }
+  .slide-close .tag {
+    margin-top: 28px;
+    font-size: 24px;
+    color: var(--ice-blue);
+    font-weight: 500;
+  }
+  .slide-close .points {
+    margin-top: 56px;
+    display: flex;
+    gap: 56px;
+    justify-content: center;
+  }
+  .slide-close .point {
+    flex: 0 0 220px;
+  }
+  .slide-close .point .num {
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--ice-blue);
+    line-height: 1;
+  }
+  .slide-close .point .label {
+    margin-top: 12px;
+    font-size: 16px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.4;
+  }
+  .slide-close .corner-mark { color: rgba(255,255,255,0.6); }
+  .slide-close .corner-mark .dot { background: rgba(255,255,255,0.08); color: var(--ice-blue); }
+
+  /* Pillars grid */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    max-width: 1100px;
+    margin-top: 56px;
+  }
+  .pillar {
+    background: white;
+    padding: 32px;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    text-align: left;
+  }
+  .pillar .icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: var(--ice-blue);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .pillar h4 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .pillar p {
+    font-size: 16px;
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 10px 18px;
+    border-radius: 999px;
+    box-shadow: 0 6px 24px rgba(20, 38, 69, 0.12);
+    z-index: 100;
+  }
+  .nav button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--deep-navy);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background 0.15s;
+  }
+  .nav button:hover { background: var(--frost); }
+  .nav .counter {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary);
+    min-width: 50px;
+    text-align: center;
+  }
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+  .dot-nav {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--divider);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s;
+  }
+  .dot-nav.active { background: var(--ice-blue-strong); }
+
+  .slide-name {
+    position: fixed;
+    bottom: 26px;
+    right: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary);
+    letter-spacing: 0.3px;
+    z-index: 99;
+  }
+
+  /* Larger screens vs smaller */
+  @media (max-width: 1100px) {
+    .slide-content { gap: 32px; padding: 0 32px; }
+    .copy h3 { font-size: 42px; }
+    .copy p { font-size: 18px; }
+    .phone { width: 260px; }
+  }
+</style>
+</head>
+<body>
+
+<main class="deck" id="deck">
+
+  <!-- 1. Cover -->
+  <section class="slide active slide-cover" data-name="Cover">
+    <div class="corner-mark"><span class="dot">❄</span> NIS Tracker</div>
+    <img src="img/app-icon.png" alt="NIS Tracker" class="app-icon">
+    <h1>NIS Tracker</h1>
+    <div class="tag">A community app, built by the club, for the club.</div>
+    <div class="by-line">Andrew · April 2026</div>
+  </section>
+
+  <!-- 2. Section: Why -->
+  <section class="slide slide-section" data-name="Why">
+    <div class="corner-mark"><span class="dot">❄</span> NIS Tracker</div>
+    <div class="eyebrow">Why we built it</div>
+    <h2>The center of ice swimming community life.</h2>
+    <p class="lede">Share what we did. Understand the data. Self-organize. Stay motivated. Built around four pillars — not engagement metrics.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icon">💬</div>
+        <h4>Social celebration</h4>
+        <p>Photos, comments, fist bumps. The part everyone loves most.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">📊</div>
+        <h4>Data &amp; insights</h4>
+        <p>Personal stats, club trends, temperature correlations. Not a generic charting library.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">📅</div>
+        <h4>Self-organization</h4>
+        <p>Events, RSVPs, Next Up. Members find each other in the water.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">🎯</div>
+        <h4>Motivation</h4>
+        <p>Streaks, achievements, season goals. Quiet nudges, never bait.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Sign-in / Safety briefing -->
+  <section class="slide slide-content duo" data-name="Onboarding">
+    <div class="corner-mark"><span class="dot">❄</span> Onboarding</div>
+    <div class="copy">
+      <div class="eyebrow">Joining the club</div>
+      <h3>Invite-only. Safety first.</h3>
+      <p>An invite code from the club gets you in. A versioned safety briefing keeps everyone honest about what cold water can do — when the club updates it, members re-confirm.</p>
+      <ul>
+        <li>Invite code rotates per season — admins control it</li>
+        <li>Safety terms versioned and acknowledged</li>
+        <li>Liability waiver captured at signup</li>
+      </ul>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/11-sign-in.png" alt="Sign in"></div>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/12-safety-briefing.png" alt="Safety briefing"></div>
+    </div>
+  </section>
+
+  <!-- 4. Feed -->
+  <section class="slide slide-content" data-name="Feed">
+    <div class="corner-mark"><span class="dot">❄</span> Feed</div>
+    <div class="copy">
+      <div class="eyebrow">The Swims tab</div>
+      <h3>The home screen.</h3>
+      <p>Yesterday's stats up top, your weekly goal underneath, upcoming events with avatars of who's going, then a feed of everyone's swims with photos, conditions, fist bumps, and comments.</p>
+      <ul>
+        <li>Real-time — others' swims appear as they log</li>
+        <li>Swim summary: distance, temperature, duration, weather labels</li>
+        <li>Tap a swim for the full detail view</li>
+      </ul>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/01-feed.png" alt="Swims feed"></div>
+    </div>
+  </section>
+
+  <!-- 7. Swim detail -->
+  <section class="slide slide-content" data-name="Swim Detail">
+    <div class="corner-mark"><span class="dot">❄</span> Feed</div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/02-swim-detail.png" alt="Swim detail"></div>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Swim detail</div>
+      <h3>Every swim has a story.</h3>
+      <p>Photo, distance, temperature, time in water, conditions, who you swam with, notes. Comments below for the conversation. Fist bumps for the quick reactions.</p>
+      <ul>
+        <li>Multi-photo carousel</li>
+        <li>@-mentions in notes and comments</li>
+        <li>Live-updating comments and reactions</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8. Log a swim -->
+  <section class="slide slide-content" data-name="Log a Swim">
+    <div class="corner-mark"><span class="dot">❄</span> Feed</div>
+    <div class="copy">
+      <div class="eyebrow">Logging</div>
+      <h3>One sheet. Done in 20 seconds.</h3>
+      <p>Tap the &plus; from anywhere, fill the obvious fields, tag your weather and buddies, hit Save. Photo optional. Privacy lock optional.</p>
+      <ul>
+        <li>Smart defaults: location, time, weather rolled forward</li>
+        <li>Buddy autocomplete from club roster</li>
+        <li>Counts toward club achievements when logged at Sandkaj</li>
+      </ul>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/05-log-swim.png" alt="Log a swim"></div>
+    </div>
+  </section>
+
+  <!-- 9. Stats -->
+  <section class="slide slide-content" data-name="Stats">
+    <div class="corner-mark"><span class="dot">❄</span> Stats</div>
+    <div class="copy">
+      <div class="eyebrow">The Stats tab</div>
+      <h3>Numbers that mean something.</h3>
+      <p>Trends across the season — swims, distance, duration — with average water temperature overlaid. Correlations: temperature vs. distance, vs. time, distance vs. time. Not a generic dashboard.</p>
+      <ul>
+        <li>Filter by rolling window or by month</li>
+        <li>Past seasons reachable for the long view</li>
+        <li>Personal activity below the club view</li>
+      </ul>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/03-stats.png" alt="Stats"></div>
+    </div>
+  </section>
+
+  <!-- 10. Events -->
+  <section class="slide slide-content" data-name="Events">
+    <div class="corner-mark"><span class="dot">❄</span> Events</div>
+    <div class="copy">
+      <div class="eyebrow">The Events tab</div>
+      <h3>Self-organize.</h3>
+      <p>Next Up at the top — what's happening soonest, who's going. Calendar strip for the week. RSVP in one tap. Recurring weekly events for the AGM, lunch swims, anything regular.</p>
+      <ul>
+        <li>Anyone can create an event</li>
+        <li>Weekly recurrences capped to season end (Apr 30)</li>
+        <li>Going / Cancel RSVP, optimistic updates</li>
+      </ul>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/04-events.png" alt="Events"></div>
+    </div>
+  </section>
+
+  <!-- 11. Profile -->
+  <section class="slide slide-content" data-name="Profile">
+    <div class="corner-mark"><span class="dot">❄</span> Profile</div>
+    <div class="copy">
+      <div class="eyebrow">Profile</div>
+      <h3>Your career, at a glance.</h3>
+      <p>Recent activity, all-time stats, your swim history. Your settings, including whether you're hidden from the leaderboard. Your color, your name, your story.</p>
+      <ul>
+        <li>Public profiles for browsing other members</li>
+        <li>Career totals: official swims, total distance, member since</li>
+        <li>Tabbed: Overview · Swims · Stats · Settings</li>
+      </ul>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/10-profile.png" alt="Profile"></div>
+    </div>
+  </section>
+
+  <!-- Admin: Engagement review + Safety upkeep -->
+  <section class="slide slide-content duo" data-name="Admin: Engagement / Safety">
+    <div class="corner-mark"><span class="dot">❄</span> Admin</div>
+    <div class="copy">
+      <div class="eyebrow">Engagement &amp; safety upkeep</div>
+      <h3>Tools the board runs on.</h3>
+      <p>Two ongoing jobs in-app: review member engagement against the season's criteria — has each member met the buddy and cold-swim minimums? — and keep the safety briefing current as the club evolves what it expects of swimmers.</p>
+      <ul>
+        <li>Per-season scorecard: buddy criterion, cold-swim criterion, events hosted</li>
+        <li>Filter by criterion status, drill into individual members</li>
+        <li>Edit and version the safety briefing — members re-acknowledge on next launch</li>
+      </ul>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/06-board-tracking.png" alt="Board tracking"></div>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/08-safety-terms.png" alt="Safety terms"></div>
+    </div>
+  </section>
+
+  <!-- Admin: Invite code + Pending approvals -->
+  <section class="slide slide-content duo" data-name="Admin: Invite / Approvals">
+    <div class="corner-mark"><span class="dot">❄</span> Admin</div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/07-invite-code.png" alt="Invite code"></div>
+    </div>
+    <div class="phone-stage">
+      <div class="phone"><img src="img/09-pending-approvals.png" alt="Pending approvals"></div>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">Onboarding the next member</div>
+      <h3>How new joiners get in.</h3>
+      <p>Two-step gate: rotate the invite code each season so it doesn't leak indefinitely, then review and approve every signup before they can post or RSVP.</p>
+      <ul>
+        <li>One-tap invite-code rotation, scoped per season</li>
+        <li>Pending queue surfaces every signup awaiting board approval</li>
+        <li>Approve or reject — admins decide who's actually in the club</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 15. Finance: What it costs -->
+  <section class="slide slide-finance" data-name="What it costs">
+    <div class="corner-mark"><span class="dot">❄</span> The proposal</div>
+    <div class="header">
+      <div class="eyebrow">The ask</div>
+      <h2>What it costs to run.</h2>
+    </div>
+    <div class="finance-grid">
+      <div class="cost-table">
+        <div class="cost-row head">
+          <div>What</div>
+          <div>Cost</div>
+          <div>Why</div>
+        </div>
+        <div class="cost-row">
+          <div class="what">Apple App Store</div>
+          <div class="cost">~680 kr/year</div>
+          <div class="why">Required to publish and distribute on iPhone.</div>
+        </div>
+        <div class="cost-row">
+          <div class="what">Google Play Store</div>
+          <div class="cost">~170 kr one-time</div>
+          <div class="why">Required to publish and distribute on Android.</div>
+        </div>
+        <div class="cost-row">
+          <div class="what">Firebase (cloud backend)</div>
+          <div class="cost">~340 kr/year</div>
+          <div class="why">Database, login, push notifications, photo storage. A club our size (60–70 members) fits mostly within Firebase's free tier — small overages mainly for swim photos.</div>
+        </div>
+        <div class="cost-row">
+          <div class="what">Claude subscription (development)</div>
+          <div class="cost">~1,640 kr/year</div>
+          <div class="why">AI coding tool for ongoing maintenance, bug fixes, new features. The lowest tier that supports the volume of work needed.</div>
+        </div>
+        <div class="cost-row total">
+          <div class="what">Total</div>
+          <div class="cost">~2,660 kr/year</div>
+          <div class="why">Roughly <strong>3–4 kr per member per month.</strong></div>
+        </div>
+      </div>
+      <div class="finance-side">
+        <div class="finance-card hero">
+          <div class="num">3–4 kr</div>
+          <div class="num-tag">per member, per month</div>
+        </div>
+        <div class="finance-card">
+          <h4>For context</h4>
+          <p>All development and testing time so far has been on a volunteer basis. These costs only keep things running and let me keep improving the app.</p>
+        </div>
+        <div class="finance-card compare">
+          <h4>Comparison</h4>
+          <p>Off-the-shelf club apps like <strong>Spond</strong> or <strong>TeamSnap</strong> run 35–100 kr per member per month — for less functionality.</p>
+          <span class="badge">10–30× cheaper</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <section class="slide slide-close" data-name="Thanks">
+    <div class="corner-mark"><span class="dot">❄</span> NIS Tracker</div>
+    <h2>Thank you.</h2>
+    <div class="tag">Questions welcome.</div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button id="prev" aria-label="Previous">←</button>
+  <span class="counter" id="counter">1 / 15</span>
+  <button id="next" aria-label="Next">→</button>
+  <span style="width: 1px; height: 18px; background: var(--divider); margin: 0 4px;"></span>
+  <span class="dots" id="dots"></span>
+</nav>
+<div class="slide-name" id="slideName">Cover</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const slideName = document.getElementById('slideName');
+  const dotsEl = document.getElementById('dots');
+  let i = 0;
+
+  // Build dots
+  slides.forEach((_, idx) => {
+    const b = document.createElement('button');
+    b.className = 'dot-nav' + (idx === 0 ? ' active' : '');
+    b.setAttribute('aria-label', 'Go to slide ' + (idx + 1));
+    b.addEventListener('click', () => go(idx));
+    dotsEl.appendChild(b);
+  });
+
+  function go(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    Array.from(dotsEl.children).forEach((d, idx) => d.classList.toggle('active', idx === i));
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    slideName.textContent = slides[i].dataset.name || '';
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(i - 1));
+  document.getElementById('next').addEventListener('click', () => go(i + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(i - 1); }
+    else if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(slides.length - 1);
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  // Tap left/right halves on touch
+  document.getElementById('deck').addEventListener('click', (e) => {
+    if (e.target.closest('.nav') || e.target.closest('.dot-nav')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.7) go(i + 1);
+    else if (x < 0.3) go(i - 1);
+  });
+</script>
+
+</body>
+</html>
