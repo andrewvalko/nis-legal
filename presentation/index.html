@@ -263,6 +263,82 @@
     width: 290px;
   }
 
+  /* Privacy slide */
+  .slide-privacy {
+    background: var(--frost);
+    flex-direction: column;
+    padding: 56px 80px;
+  }
+  .slide-privacy .header {
+    text-align: center;
+    margin-bottom: 36px;
+    max-width: 1100px;
+  }
+  .slide-privacy .eyebrow {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--ice-blue-strong);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .slide-privacy h2 {
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+  }
+  .slide-privacy .lede {
+    margin-top: 16px;
+    font-size: 22px;
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+  .privacy-list {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .privacy-row {
+    background: white;
+    padding: 22px 26px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 22px;
+    align-items: center;
+  }
+  .privacy-row .num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--ice-blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .privacy-row h4 {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--deep-navy);
+    margin-bottom: 4px;
+  }
+  .privacy-row p {
+    font-size: 15px;
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+  .privacy-row .body strong {
+    color: var(--deep-navy);
+    font-weight: 600;
+  }
+
   /* Finance slide */
   .slide-finance {
     background: var(--frost);
@@ -408,6 +484,19 @@
   }
 
   /* Closing slide */
+  .slide-close .gratitude {
+    max-width: 760px;
+    margin: 36px auto 0;
+    font-size: 21px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+  }
+  .slide-close .gratitude em {
+    color: var(--ice-blue);
+    font-style: normal;
+    font-weight: 500;
+  }
   .slide-close {
     background: var(--deep-navy);
     color: white;
@@ -733,6 +822,53 @@
     </div>
   </section>
 
+  <!-- Privacy & control -->
+  <section class="slide slide-privacy" data-name="Privacy &amp; control">
+    <div class="corner-mark"><span class="dot">❄</span> Privacy</div>
+    <div class="header">
+      <div class="eyebrow">Privacy &amp; control</div>
+      <h2>The data is the members'. Always.</h2>
+      <p class="lede">Five concrete commitments — built into the app, not just the policy page.</p>
+    </div>
+    <div class="privacy-list">
+      <div class="privacy-row">
+        <div class="num">1</div>
+        <div class="body">
+          <h4>Members-only by design</h4>
+          <p>Only approved club members can join, and only members see club swims. No public feed, no search engine indexing, no &ldquo;guest&rdquo; tier.</p>
+        </div>
+      </div>
+      <div class="privacy-row">
+        <div class="num">2</div>
+        <div class="body">
+          <h4>Public or private — your call, per swim</h4>
+          <p>Toggle any swim private at log time or after. The board can still see <strong>aggregates</strong> for engagement tracking — never the identifying details of a private swim.</p>
+        </div>
+      </div>
+      <div class="privacy-row">
+        <div class="num">3</div>
+        <div class="body">
+          <h4>Opt out of leaderboards &amp; charts</h4>
+          <p>One toggle in Settings hides you from the top-5 leaderboard and anonymizes your dot in correlation charts. Your swims still appear in your own stats; nobody else can identify them.</p>
+        </div>
+      </div>
+      <div class="privacy-row">
+        <div class="num">4</div>
+        <div class="body">
+          <h4>Delete swims or your whole account</h4>
+          <p>Swim-by-swim or all-at-once. Your data is removed from storage <strong>within 5 minutes</strong> — no soft-delete, no grace-period inbox.</p>
+        </div>
+      </div>
+      <div class="privacy-row">
+        <div class="num">5</div>
+        <div class="body">
+          <h4>Nothing leaves NIS</h4>
+          <p>No analytics shared with third parties, no ads. The wellbeing-research integration we're scoping is <strong>fully opt-in</strong> and anonymous — you choose, swim by swim.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Admin: Engagement review + Safety upkeep -->
   <section class="slide slide-content duo" data-name="Admin: Engagement / Safety">
     <div class="corner-mark"><span class="dot">❄</span> Admin</div>
@@ -837,7 +973,8 @@
   <section class="slide slide-close" data-name="Thanks">
     <div class="corner-mark"><span class="dot">❄</span> NIS Tracker</div>
     <h2>Thank you.</h2>
-    <div class="tag">Questions welcome.</div>
+    <div class="tag">Questions, ideas, feedback — all welcome.</div>
+    <p class="gratitude">Genuinely grateful for the chance to build a product for <em>such a wonderful community</em>. The roadmap is yours — tell me what would make this app better for you.</p>
   </section>
 
 </main>
