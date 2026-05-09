@@ -39,9 +39,10 @@
         .lvlBtn.beaten:hover { background: #146814; box-shadow: 0 0 10px #ff0; }
 
         /* Game over overlay */
-        #gameover { display: none; position: absolute; top: 60px; left: 50%; transform: translateX(-50%); color: #f00; font-size: 48px; text-align: center; text-shadow: 0 0 12px #f00; pointer-events: none; }
+        #gameover { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.55); color: #f00; font-size: 48px; text-align: center; text-shadow: 0 0 12px #f00; pointer-events: auto; cursor: pointer; padding-top: 80px; box-sizing: border-box; z-index: 6; }
         #gameover.win { color: #0f0; text-shadow: 0 0 14px #0f0; }
-        #gameoverHint { font-size: 18px; color: #888; }
+        #gameoverHint { display: inline-block; margin-top: 24px; font-size: 18px; color: #ff0; border: 2px solid #ff0; padding: 14px 28px; letter-spacing: 3px; background: rgba(255,255,0,0.08); }
+        #gameoverHint:active { background: rgba(255,255,0,0.25); }
     </style>
 </head>
 <body>
@@ -90,7 +91,7 @@
     <div id="gameover">
         <span id="gameoverTitle">CRASHED!</span><br>
         <span id="gameoverSub" style="font-size:24px;"></span><br>
-        <span id="gameoverHint">Press ENTER to continue</span>
+        <span id="gameoverHint">TAP OR PRESS ENTER</span>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -587,7 +588,15 @@
             if (isWin) go.classList.add('win'); else go.classList.remove('win');
             document.getElementById('gameoverTitle').innerText = title;
             document.getElementById('gameoverSub').innerText = sub || '';
+            // Hide steering arrows during game over so they don't compete with the tap target
+            document.getElementById('touchControls').style.display = 'none';
+            holdLeft = false; holdRight = false;
         }
+
+        // Tap anywhere on the game-over overlay to return to the prev menu
+        document.getElementById('gameover').addEventListener('click', () => {
+            if (gameOverShown) setMode(returnTo);
+        });
 
         function gameOver() {
             if (crashed || won) return;
