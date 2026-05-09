@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slope Plus - Neon Overdrive</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: 'Courier New', Courier, monospace; color: #0f0; }
+
+        /* Game HUDs */
+        #ui { display: none; position: absolute; top: 20px; left: 20px; color: #0f0; font-size: 24px; pointer-events: none; }
+        #ui small { display: block; font-size: 14px; color: #888; margin-top: 4px; }
+        #raceUi { display: none; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 22px; pointer-events: none; text-align: center; }
+        #raceUi .you { color: #0f0; text-shadow: 0 0 6px #0f0; }
+        #raceUi .cpu { color: #f0f; text-shadow: 0 0 6px #f0f; }
+        #raceUi .vs { color: #888; margin: 0 14px; }
+        #instructions { display: none; position: absolute; bottom: 20px; width: 100%; text-align: center; color: #555; font-size: 13px; letter-spacing: 1px; }
+
+        /* Touch controls (iPad / phone) */
+        #touchControls { display: none; position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+        .touchBtn { position: absolute; bottom: 24px; width: 110px; height: 110px; background: rgba(0, 255, 0, 0.12); border: 2px solid rgba(0, 255, 0, 0.7); color: #0f0; font-size: 50px; font-family: inherit; line-height: 100px; text-align: center; pointer-events: auto; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; touch-action: none; border-radius: 12px; }
+        .touchBtn:active, .touchBtn.held { background: rgba(0, 255, 0, 0.35); box-shadow: 0 0 14px #0f0; }
+        #btnLeft { left: 24px; }
+        #btnRight { right: 24px; }
+
+        /* Menu screens */
+        .screen { position: absolute; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+        .screen h1 { font-size: 56px; margin: 0; text-shadow: 0 0 14px #0f0; letter-spacing: 8px; }
+        .screen h2 { font-size: 14px; color: #888; margin: 6px 0 36px; letter-spacing: 4px; }
+        .screen p { color: #aaa; max-width: 460px; text-align: center; line-height: 1.6; font-size: 14px; }
+
+        .menuBtn { width: 320px; height: 64px; background: #001a00; border: 1px solid #0f0; color: #0f0; font-family: inherit; font-size: 20px; letter-spacing: 4px; cursor: pointer; margin: 6px 0; transition: background 0.1s, box-shadow 0.1s; }
+        .menuBtn:hover { background: #003300; box-shadow: 0 0 12px #0f0; }
+        .menuBtn.back { width: 200px; height: 44px; font-size: 14px; margin-top: 28px; color: #888; border-color: #444; }
+        .menuBtn.back:hover { background: #111; box-shadow: 0 0 6px #888; color: #ccc; }
+
+        #levelGrid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; max-width: 720px; margin-top: 8px; }
+        .lvlBtn { width: 60px; height: 60px; background: #001a00; border: 1px solid #0f0; color: #0f0; font-family: inherit; font-size: 18px; cursor: pointer; transition: background 0.1s, box-shadow 0.1s; }
+        .lvlBtn:hover { background: #003300; box-shadow: 0 0 10px #0f0; }
+        .lvlBtn.beaten { background: #0a4f0a; color: #ff0; border-color: #ff0; text-shadow: 0 0 4px #ff0; }
+        .lvlBtn.beaten:hover { background: #146814; box-shadow: 0 0 10px #ff0; }
+
+        /* Game over overlay */
+        #gameover { display: none; position: absolute; top: 60px; left: 50%; transform: translateX(-50%); color: #f00; font-size: 48px; text-align: center; text-shadow: 0 0 12px #f00; pointer-events: none; }
+        #gameover.win { color: #0f0; text-shadow: 0 0 14px #0f0; }
+        #gameoverHint { font-size: 18px; color: #888; }
+    </style>
+</head>
+<body>
+    <!-- Main menu -->
+    <div id="mainMenu" class="screen">
+        <h1>SLOPE PLUS</h1>
+        <h2>NEON OVERDRIVE</h2>
+        <button class="menuBtn" id="btnPlay">▶ &nbsp;PLAY</button>
+        <button class="menuBtn" id="btnRace">⚡ &nbsp;RACE THE CPU</button>
+        <button class="menuBtn" id="btnOnline">◉ &nbsp;ONLINE PLAY</button>
+    </div>
+
+    <!-- Level select -->
+    <div id="levelMenu" class="screen" style="display:none;">
+        <h1>SELECT LEVEL</h1>
+        <h2>FIRST TO 100 POINTS WINS THE LEVEL</h2>
+        <div id="levelGrid"></div>
+        <button class="menuBtn back" id="btnBackFromLevels">← &nbsp;BACK</button>
+    </div>
+
+    <!-- Online -->
+    <div id="onlineMenu" class="screen" style="display:none;">
+        <h1>ONLINE PLAY</h1>
+        <h2>COMING SOON</h2>
+        <p>Real-time multiplayer needs a server to match two players together and sync their balls over the internet — can't fit that in a single HTML file. For now, RACE THE CPU is your closest match.</p>
+        <button class="menuBtn back" id="btnBackFromOnline">← &nbsp;BACK</button>
+    </div>
+
+    <!-- HUDs -->
+    <div id="ui">
+        Level <span id="levelLabel">1</span>
+        <small>Score: <span id="score">0</span> / <span id="targetScore">100</span></small>
+    </div>
+    <div id="raceUi">
+        <span class="you">YOU: <span id="playerRaceScore">0</span></span><span class="vs">VS</span><span class="cpu">CPU: <span id="cpuRaceScore">0</span></span>
+    </div>
+    <div id="instructions">LEFT / RIGHT to steer · YELLOW = SPEED BOOST · ESC = MENU</div>
+
+    <!-- Touch controls (iPad / phone) -->
+    <div id="touchControls">
+        <button id="btnLeft" class="touchBtn">◄</button>
+        <button id="btnRight" class="touchBtn">►</button>
+    </div>
+
+    <!-- Game over -->
+    <div id="gameover">
+        <span id="gameoverTitle">CRASHED!</span><br>
+        <span id="gameoverSub" style="font-size:24px;"></span><br>
+        <span id="gameoverHint">Press ENTER to continue</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // ============================================================
+        //  Constants
+        // ============================================================
+        const TOTAL_LEVELS = 50;
+        const PLAYER_TRACK_X = -10;   // race-mode player track center
+        const CPU_TRACK_X = 10;       // race-mode CPU track center
+
+        // ============================================================
+        //  State
+        // ============================================================
+        let scene, camera, renderer;
+        let ball, cpuBall;
+        let obstacles = [], platforms = [], boosters = [];
+        let cpuObstacles = [], cpuPlatforms = [];
+
+        let speed = 0.4, score = 0, targetX = 0;
+        let cpuSpeed = 0.4, cpuScore = 0, cpuTargetX = CPU_TRACK_X;
+
+        let crashed = false, cpuCrashed = false, won = false;
+        let mode = 'main';            // 'main' | 'levels' | 'online' | 'level' | 'race'
+        let returnTo = 'main';        // where ENTER goes from gameover overlay
+        let gameOverShown = false;
+        let holdLeft = false, holdRight = false;
+
+        let currentLevel = 1, levelTarget = 100;
+
+        // ============================================================
+        //  Persistence
+        // ============================================================
+        function getBeaten() {
+            try { return new Set(JSON.parse(localStorage.getItem('magnus.beaten') || '[]')); }
+            catch { return new Set(); }
+        }
+        function markBeaten(n) {
+            const beaten = getBeaten();
+            beaten.add(n);
+            localStorage.setItem('magnus.beaten', JSON.stringify([...beaten]));
+        }
+
+        // ============================================================
+        //  Screen routing
+        // ============================================================
+        function setMode(newMode) {
+            mode = newMode;
+            // Hide everything first
+            ['mainMenu', 'levelMenu', 'onlineMenu', 'ui', 'raceUi', 'instructions', 'gameover', 'touchControls'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            holdLeft = false; holdRight = false;
+            gameOverShown = false;
+
+            // Tear down game scene if leaving gameplay
+            if (newMode !== 'level' && newMode !== 'race') {
+                if (renderer && renderer.domElement && renderer.domElement.parentNode) {
+                    renderer.domElement.parentNode.removeChild(renderer.domElement);
+                }
+            }
+
+            if (newMode === 'main') {
+                document.getElementById('mainMenu').style.display = 'flex';
+            } else if (newMode === 'levels') {
+                document.getElementById('levelMenu').style.display = 'flex';
+                buildLevelGrid();
+            } else if (newMode === 'online') {
+                document.getElementById('onlineMenu').style.display = 'flex';
+            } else if (newMode === 'level') {
+                document.getElementById('ui').style.display = 'block';
+                document.getElementById('instructions').style.display = 'block';
+                document.getElementById('touchControls').style.display = 'block';
+            } else if (newMode === 'race') {
+                document.getElementById('raceUi').style.display = 'block';
+                document.getElementById('instructions').style.display = 'block';
+                document.getElementById('touchControls').style.display = 'block';
+            }
+        }
+
+        function buildLevelGrid() {
+            const grid = document.getElementById('levelGrid');
+            const beaten = getBeaten();
+            grid.innerHTML = '';
+            for (let i = 1; i <= TOTAL_LEVELS; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'lvlBtn' + (beaten.has(i) ? ' beaten' : '');
+                btn.textContent = beaten.has(i) ? i + '✓' : i;
+                btn.addEventListener('click', () => startLevel(i));
+                grid.appendChild(btn);
+            }
+        }
+
+        // ============================================================
+        //  Game start: single-player level
+        // ============================================================
+        function startLevel(n) {
+            currentLevel = n;
+            levelTarget = 100;
+            returnTo = 'levels';
+
+            obstacles = []; platforms = []; boosters = [];
+            cpuObstacles = []; cpuPlatforms = [];
+            score = 0; targetX = 0; crashed = false; won = false;
+            speed = 0.4 + (n - 1) * 0.025;
+
+            document.getElementById('levelLabel').innerText = n;
+            document.getElementById('targetScore').innerText = levelTarget;
+            document.getElementById('score').innerText = '0';
+
+            setMode('level');
+            initScene();
+            // Build track
+            for (let i = 0; i < 20; i++) addLevelPlatform(i * -10);
+            animate();
+        }
+
+        // ============================================================
+        //  Game start: race
+        // ============================================================
+        function startRace() {
+            returnTo = 'main';
+            currentLevel = 1; // controls obstacle density baseline
+
+            obstacles = []; platforms = []; boosters = [];
+            cpuObstacles = []; cpuPlatforms = [];
+            score = 0; cpuScore = 0;
+            targetX = PLAYER_TRACK_X; cpuTargetX = CPU_TRACK_X;
+            crashed = false; cpuCrashed = false; won = false;
+            speed = 0.45; cpuSpeed = 0.45;
+
+            document.getElementById('playerRaceScore').innerText = '0';
+            document.getElementById('cpuRaceScore').innerText = '0';
+
+            setMode('race');
+            initScene();
+            for (let i = 0; i < 20; i++) {
+                addRacePlatform(i * -10, PLAYER_TRACK_X, platforms, obstacles, 0x00ff00);
+                addRacePlatform(i * -10, CPU_TRACK_X, cpuPlatforms, cpuObstacles, 0xff00ff);
+            }
+            animate();
+        }
+
+        // ============================================================
+        //  Scene setup
+        // ============================================================
+        function initScene() {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.018);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Lighting — bright enough to show colors, neon green accent kept
+            scene.add(new THREE.AmbientLight(0xaaaaaa));
+            const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+            sun.position.set(5, 10, 5);
+            scene.add(sun);
+            const accent = new THREE.PointLight(0x00ff00, 0.8, 100);
+            accent.position.set(0, 6, 5);
+            scene.add(accent);
+
+            // Player ball — baseball
+            ball = createBall();
+            ball.position.set(mode === 'race' ? PLAYER_TRACK_X : 0, 0.5, 0);
+            scene.add(ball);
+
+            // CPU ball if racing
+            if (mode === 'race') {
+                cpuBall = createCpuBall();
+                cpuBall.position.set(CPU_TRACK_X, 0.5, 0);
+                scene.add(cpuBall);
+            }
+        }
+
+        function createBall() {
+            const c = document.createElement('canvas');
+            c.width = 512; c.height = 256;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#f5f5f0';
+            ctx.fillRect(0, 0, 512, 256);
+            ctx.strokeStyle = '#c41e3a';
+            ctx.lineWidth = 6;
+            ctx.setLineDash([10, 6]);
+            ctx.beginPath(); ctx.moveTo(0, 90); ctx.bezierCurveTo(128, 40, 384, 40, 512, 90); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, 166); ctx.bezierCurveTo(128, 216, 384, 216, 512, 166); ctx.stroke();
+            const tex = new THREE.CanvasTexture(c);
+            const m = new THREE.Mesh(
+                new THREE.SphereGeometry(0.5, 32, 32),
+                new THREE.MeshPhongMaterial({ map: tex })
+            );
+            return m;
+        }
+
+        function createCpuBall() {
+            const m = new THREE.Mesh(
+                new THREE.SphereGeometry(0.5, 32, 32),
+                new THREE.MeshPhongMaterial({
+                    color: 0xff00ff, emissive: 0x440044, emissiveIntensity: 0.5
+                })
+            );
+            return m;
+        }
+
+        // ============================================================
+        //  Floor + obstacles + boosters
+        // ============================================================
+        let _platformTex = null;
+        function getPlatformTexture() {
+            if (_platformTex) return _platformTex;
+            const c = document.createElement('canvas');
+            c.width = 256; c.height = 256;
+            const ctx = c.getContext('2d');
+            // Solid charcoal base — Slope-style
+            ctx.fillStyle = '#1a1a1f';
+            ctx.fillRect(0, 0, 256, 256);
+            // Side rails
+            ctx.strokeStyle = '#0f0';
+            ctx.globalAlpha = 0.55;
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(18, 0); ctx.lineTo(18, 256); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(238, 0); ctx.lineTo(238, 256); ctx.stroke();
+            // Center dashed lane line
+            ctx.globalAlpha = 0.4;
+            ctx.lineWidth = 2;
+            ctx.setLineDash([20, 20]);
+            ctx.beginPath(); ctx.moveTo(128, 0); ctx.lineTo(128, 256); ctx.stroke();
+            _platformTex = new THREE.CanvasTexture(c);
+            return _platformTex;
+        }
+
+        function makePlatform(z, trackX, edgeColor) {
+            const geo = new THREE.BoxGeometry(10, 0.5, 10);
+            const mat = new THREE.MeshPhongMaterial({
+                map: getPlatformTexture(),
+                emissive: 0x000000,
+                shininess: 80
+            });
+            const p = new THREE.Mesh(geo, mat);
+            p.position.set(trackX, 0, z);
+            const edges = new THREE.EdgesGeometry(geo);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: edgeColor }));
+            p.add(line);
+            return p;
+        }
+
+        function createPlayer(x, z) {
+            const geo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+            const mat = new THREE.MeshPhongMaterial({
+                color: 0xff2222, emissive: 0x661111, emissiveIntensity: 0.5
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            const edges = new THREE.EdgesGeometry(geo);
+            mesh.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xff8888 })));
+            mesh.position.set(x, 0.75, z);
+            mesh.userData.baseX = x;
+            mesh.userData.phase = Math.random() * Math.PI * 2;
+            return mesh;
+        }
+
+        let _boostTex = null;
+        function getBoosterTexture() {
+            if (_boostTex) return _boostTex;
+            const c = document.createElement('canvas');
+            c.width = 256; c.height = 256;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ffea00';
+            ctx.fillRect(0, 0, 256, 256);
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.moveTo(150, 30);
+            ctx.lineTo(80, 130);
+            ctx.lineTo(120, 130);
+            ctx.lineTo(95, 226);
+            ctx.lineTo(176, 116);
+            ctx.lineTo(132, 116);
+            ctx.lineTo(170, 30);
+            ctx.closePath();
+            ctx.fill();
+            _boostTex = new THREE.CanvasTexture(c);
+            return _boostTex;
+        }
+
+        function createBooster(x, z) {
+            const geo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+            const mat = new THREE.MeshPhongMaterial({
+                map: getBoosterTexture(),
+                emissive: 0x886600, emissiveIntensity: 0.4
+            });
+            const boost = new THREE.Mesh(geo, mat);
+            const edges = new THREE.EdgesGeometry(geo);
+            boost.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffff66 })));
+            boost.position.set(x, 0.75, z);
+            return boost;
+        }
+
+        // Single-track level
+        function addLevelPlatform(z) {
+            const p = makePlatform(z, 0, 0x00ff00);
+            scene.add(p);
+            platforms.push(p);
+            if (z >= -20) return;
+            const obsChance = 0.5 + Math.min(0.3, currentLevel * 0.007);
+            if (Math.random() < obsChance) {
+                const x1 = (Math.random() - 0.5) * 8;
+                const o1 = createPlayer(x1, z);
+                scene.add(o1); obstacles.push(o1);
+                if (Math.random() < 0.25 + Math.min(0.25, currentLevel * 0.006)) {
+                    const x2 = -Math.sign(x1 || 1) * (1.5 + Math.random() * 2.5);
+                    const o2 = createPlayer(x2, z);
+                    scene.add(o2); obstacles.push(o2);
+                }
+            }
+            if (Math.random() < 0.12) {
+                const b = createBooster((Math.random() - 0.5) * 8, z);
+                scene.add(b); boosters.push(b);
+            }
+        }
+
+        // Race-mode track (no boosters to keep it pure 1v1)
+        function addRacePlatform(z, trackX, platList, obsList, edgeColor) {
+            const p = makePlatform(z, trackX, edgeColor);
+            scene.add(p);
+            platList.push(p);
+            if (z >= -20) return;
+            if (Math.random() < 0.5) {
+                const x1 = trackX + (Math.random() - 0.5) * 8;
+                const o1 = createPlayer(x1, z);
+                scene.add(o1); obsList.push(o1);
+                if (Math.random() < 0.3) {
+                    const dir = -Math.sign(x1 - trackX || 1);
+                    const x2 = trackX + dir * (1.5 + Math.random() * 2.5);
+                    const o2 = createPlayer(x2, z);
+                    scene.add(o2); obsList.push(o2);
+                }
+            }
+        }
+
+        // ============================================================
+        //  CPU AI
+        // ============================================================
+        function cpuThink() {
+            const lookAhead = 13;
+            let blockingX = null;
+            let nearestZ = -Infinity;
+            cpuObstacles.forEach(o => {
+                const dz = cpuBall.position.z - o.position.z;
+                if (dz > 0 && dz < lookAhead) {
+                    if (Math.abs(o.position.x - cpuBall.position.x) < 2.2 && o.position.z > nearestZ) {
+                        nearestZ = o.position.z;
+                        blockingX = o.position.x;
+                    }
+                }
+            });
+            if (blockingX !== null) {
+                const dir = blockingX > cpuBall.position.x ? -1 : 1;
+                cpuTargetX = cpuBall.position.x + dir * 2.5;
+                cpuTargetX = Math.max(CPU_TRACK_X - 4, Math.min(CPU_TRACK_X + 4, cpuTargetX));
+            } else {
+                // Drift gently back to center
+                cpuTargetX += (CPU_TRACK_X - cpuTargetX) * 0.04;
+            }
+        }
+
+        // ============================================================
+        //  Animate
+        // ============================================================
+        function animate() {
+            // Stop the loop on game over
+            if (mode === 'level' && (crashed || won)) return;
+            if (mode === 'race' && (crashed || cpuCrashed)) return;
+            if (mode !== 'level' && mode !== 'race') return;
+
+            requestAnimationFrame(animate);
+
+            if (mode === 'level') updateLevel();
+            else if (mode === 'race') updateRace();
+
+            renderer.render(scene, camera);
+        }
+
+        function updateLevel() {
+            speed += 0.00015;
+            ball.position.z -= speed;
+            ball.rotation.x -= speed;
+
+            if (holdLeft) targetX -= 0.15;
+            if (holdRight) targetX += 0.15;
+            const dx = (targetX - ball.position.x) * 0.15;
+            ball.position.x += dx;
+            ball.rotation.z -= dx * 0.6;
+
+            camera.position.set(ball.position.x * 0.5, 5, ball.position.z + 10);
+            camera.lookAt(ball.position.x * 0.3, 0, ball.position.z - 5);
+
+            // Endless generation + score
+            if (ball.position.z < platforms[platforms.length - 10].position.z) {
+                addLevelPlatform(platforms[platforms.length - 1].position.z - 10);
+                score++;
+                document.getElementById('score').innerText = score;
+                if (score >= levelTarget) { levelComplete(); return; }
+            }
+
+            // Sway after 15 points
+            if (score >= 15) {
+                const t = performance.now() * 0.001;
+                const freq = 0.9 + Math.min(0.6, currentLevel * 0.012);
+                obstacles.forEach(obs => {
+                    if (obs.userData.swayStart === undefined) obs.userData.swayStart = t;
+                    const localT = t - obs.userData.swayStart;
+                    const amp = Math.min(localT * 0.5, 1.5);
+                    obs.position.x = obs.userData.baseX + Math.sin(localT * freq + obs.userData.phase) * amp;
+                });
+            }
+
+            // Boosters
+            for (let i = boosters.length - 1; i >= 0; i--) {
+                const b = boosters[i];
+                b.rotation.y += 0.06;
+                if (ball.position.distanceTo(b.position) < 1.1) {
+                    speed += 0.3;
+                    scene.remove(b);
+                    boosters.splice(i, 1);
+                }
+            }
+
+            // Collisions + falling off
+            for (const obs of obstacles) {
+                if (ball.position.distanceTo(obs.position) < 1.2) { gameOver(); return; }
+            }
+            if (Math.abs(ball.position.x) > 5.5 || ball.position.y < -5) gameOver();
+        }
+
+        function updateRace() {
+            // Player
+            speed += 0.00012;
+            ball.position.z -= speed;
+            ball.rotation.x -= speed;
+            if (holdLeft) targetX -= 0.15;
+            if (holdRight) targetX += 0.15;
+            const dx = (targetX - ball.position.x) * 0.15;
+            ball.position.x += dx;
+            ball.rotation.z -= dx * 0.6;
+
+            // CPU
+            cpuThink();
+            cpuSpeed += 0.00012;
+            cpuBall.position.z -= cpuSpeed;
+            cpuBall.rotation.x -= cpuSpeed;
+            const cdx = (cpuTargetX - cpuBall.position.x) * 0.13;
+            cpuBall.position.x += cdx;
+
+            // Camera centered between the two tracks, far enough back to see both
+            const avgZ = (ball.position.z + cpuBall.position.z) / 2;
+            camera.position.set(0, 14, avgZ + 22);
+            camera.lookAt(0, 0, avgZ + 2);
+
+            // Player track endless generation
+            if (ball.position.z < platforms[platforms.length - 10].position.z) {
+                addRacePlatform(platforms[platforms.length - 1].position.z - 10, PLAYER_TRACK_X, platforms, obstacles, 0x00ff00);
+                score++;
+                document.getElementById('playerRaceScore').innerText = score;
+            }
+            // CPU track endless generation
+            if (cpuBall.position.z < cpuPlatforms[cpuPlatforms.length - 10].position.z) {
+                addRacePlatform(cpuPlatforms[cpuPlatforms.length - 1].position.z - 10, CPU_TRACK_X, cpuPlatforms, cpuObstacles, 0xff00ff);
+                cpuScore++;
+                document.getElementById('cpuRaceScore').innerText = cpuScore;
+            }
+
+            // Player collisions
+            for (const obs of obstacles) {
+                if (ball.position.distanceTo(obs.position) < 1.2) { raceEnd('cpu'); return; }
+            }
+            if (Math.abs(ball.position.x - PLAYER_TRACK_X) > 5.5) { raceEnd('cpu'); return; }
+
+            // CPU collisions
+            for (const obs of cpuObstacles) {
+                if (cpuBall.position.distanceTo(obs.position) < 1.2) { raceEnd('player'); return; }
+            }
+            if (Math.abs(cpuBall.position.x - CPU_TRACK_X) > 5.5) { raceEnd('player'); return; }
+        }
+
+        // ============================================================
+        //  End-of-run states
+        // ============================================================
+        function showGameOver(title, sub, isWin) {
+            if (gameOverShown) return;
+            gameOverShown = true;
+            const go = document.getElementById('gameover');
+            go.style.display = 'block';
+            if (isWin) go.classList.add('win'); else go.classList.remove('win');
+            document.getElementById('gameoverTitle').innerText = title;
+            document.getElementById('gameoverSub').innerText = sub || '';
+        }
+
+        function gameOver() {
+            if (crashed || won) return;
+            crashed = true;
+            showGameOver('CRASHED!', 'Score: ' + score, false);
+        }
+
+        function levelComplete() {
+            if (won) return;
+            won = true;
+            markBeaten(currentLevel);
+            showGameOver('LEVEL ' + currentLevel + ' COMPLETE!', 'Score: ' + score, true);
+        }
+
+        function raceEnd(winner) {
+            if (crashed || cpuCrashed) return;
+            if (winner === 'player') {
+                cpuCrashed = true;
+                showGameOver('YOU WIN!', 'You: ' + score + '   CPU: ' + cpuScore, true);
+            } else {
+                crashed = true;
+                showGameOver('CPU WINS!', 'You: ' + score + '   CPU: ' + cpuScore, false);
+            }
+        }
+
+        // ============================================================
+        //  Input
+        // ============================================================
+        window.addEventListener('keydown', (e) => {
+            // Escape — return to relevant menu
+            if (e.key === 'Escape' && (mode === 'level' || mode === 'race')) {
+                setMode(returnTo);
+                return;
+            }
+            // Enter — dismiss game over
+            if ((mode === 'level' || mode === 'race') && gameOverShown && e.key === 'Enter') {
+                setMode(returnTo);
+                return;
+            }
+            // Steering — hold to keep moving
+            if ((mode === 'level' || mode === 'race') && !gameOverShown) {
+                if (e.key === 'ArrowLeft') holdLeft = true;
+                if (e.key === 'ArrowRight') holdRight = true;
+            }
+        });
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft') holdLeft = false;
+            if (e.key === 'ArrowRight') holdRight = false;
+        });
+
+        // Touch / mouse for on-screen steering buttons
+        function bindHold(elId, setHold) {
+            const el = document.getElementById(elId);
+            const press = (e) => { e.preventDefault(); setHold(true); el.classList.add('held'); };
+            const release = (e) => { if (e) e.preventDefault(); setHold(false); el.classList.remove('held'); };
+            el.addEventListener('touchstart', press, { passive: false });
+            el.addEventListener('touchend', release, { passive: false });
+            el.addEventListener('touchcancel', release, { passive: false });
+            el.addEventListener('mousedown', press);
+            el.addEventListener('mouseup', release);
+            el.addEventListener('mouseleave', release);
+        }
+        bindHold('btnLeft', (v) => { holdLeft = v; });
+        bindHold('btnRight', (v) => { holdRight = v; });
+
+        window.addEventListener('resize', () => {
+            if (renderer && camera) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        });
+
+        // ============================================================
+        //  Wire up menu buttons
+        // ============================================================
+        document.getElementById('btnPlay').addEventListener('click', () => setMode('levels'));
+        document.getElementById('btnRace').addEventListener('click', startRace);
+        document.getElementById('btnOnline').addEventListener('click', () => setMode('online'));
+        document.getElementById('btnBackFromLevels').addEventListener('click', () => setMode('main'));
+        document.getElementById('btnBackFromOnline').addEventListener('click', () => setMode('main'));
+
+        setMode('main');
+    </script>
+</body>
+</html>
