@@ -161,38 +161,8 @@
     <img src="banner.png" class="banner" alt="NIS Tracker">
 
     <div class="how-to-test">
-        <h2>How to test</h2>
-        <div class="platform-tabs">
-            <div class="platform-tab" onclick="selectPlatform('iphone', this)" id="tab-iphone">iPhone</div>
-            <div class="platform-tab" onclick="selectPlatform('android', this)" id="tab-android">Android</div>
-        </div>
-        <div class="platform-content" id="platform-iphone">
-            <ol>
-                <li>Install <a href="https://apps.apple.com/app/testflight/id899247664">TestFlight</a> from the App Store</li>
-                <li>Tap <a href="https://testflight.apple.com/join/YTQfPXec">this link</a> to install NIS Tracker</li>
-                <li>Open NIS Tracker and tap "Sign Up" to create an account</li>
-            </ol>
-        </div>
-        <div class="platform-content" id="platform-android">
-            <ol>
-                <li>Install <a href="https://play.google.com/store/apps/details?id=com.nistracker.app&hl=en">NIS Tracker</a> from the Google Play Store</li>
-                <li>Open NIS Tracker and tap "Sign Up" to create an account</li>
-            </ol>
-        </div>
+        <p style="margin: 0; font-size: 0.95rem;">Download the NIS Tracker app from the <a href="https://apps.apple.com/dk/app/nis-tracker/id6759487226">Apple App Store</a> or <a href="https://play.google.com/store/apps/details?id=com.nistracker.app&hl=en">Google Play Store</a> today.</p>
     </div>
-    <script>
-        function selectPlatform(platform, tab) {
-            if (tab.classList.contains('active')) {
-                tab.classList.remove('active');
-                document.getElementById('platform-' + platform).classList.remove('active');
-                return;
-            }
-            document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
-            tab.classList.add('active');
-            document.getElementById('platform-' + platform).classList.add('active');
-        }
-    </script>
 
     <h1>Release history</h1>
     <p class="intro">Each version lists what shipped in that Android release. iOS tracks the same cadence.</p>
