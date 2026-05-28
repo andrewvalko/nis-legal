@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin guide — NIS Tracker</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            color: #1a2a3a;
+            line-height: 1.6;
+            background: #f0f6fa;
+        }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+            color: #0d2137;
+        }
+        .intro {
+            font-size: 0.95rem;
+            color: #3a5068;
+            margin: 0.5em 0 1.5em;
+        }
+        .section-label {
+            display: inline-block;
+            color: #fff;
+            background: linear-gradient(135deg, #142645, #8CC7F0);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin: 2em 0 1em;
+            letter-spacing: 0.02em;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 640px) {
+            .card-grid { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border: 1px solid rgba(26,122,181,0.08);
+        }
+        .card h3 {
+            font-size: 0.95rem;
+            margin: 0 0 6px;
+            color: #0d2137;
+        }
+        .card p {
+            font-size: 0.85rem;
+            margin: 0;
+            color: #3a5068;
+            line-height: 1.5;
+        }
+        .card p + p {
+            margin-top: 6px;
+        }
+        .heads-up {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #1a7ab5;
+            background: #e7f1f9;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: 6px;
+            letter-spacing: 0.02em;
+        }
+        .banner { width: 100%; border-radius: 16px 16px 0 0; display: block; margin-bottom: 0; }
+        .top-card {
+            background: #fff;
+            border-radius: 0 0 16px 16px;
+            padding: 18px 22px;
+            margin-top: 0;
+            margin-bottom: 1em;
+            border: 1px solid rgba(26,122,181,0.08);
+            border-top: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .top-card p { margin: 0; font-size: 0.95rem; }
+        .divider {
+            border: none;
+            border-top: 1px solid #d6e3ed;
+            margin: 2.5em 0 0;
+        }
+    </style>
+</head>
+<body>
+    <img src="banner.png" class="banner" alt="NIS Tracker">
+
+    <div class="top-card">
+        <p>A quick tour of the admin powers built into the NIS Tracker app. As an NIS board member, you're an admin by default.</p>
+    </div>
+
+    <h1>Admin guide</h1>
+    <p class="intro">You can moderate content and manage membership, plus a few extras. Everything here is built into the app — no separate dashboard, no web login.</p>
+
+    <span class="section-label">From anywhere in the app</span>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>Delete things</h3>
+            <p>Long-press any comment, swim, or event to delete it. Useful if something's offensive or inappropriate.</p>
+        </div>
+        <div class="card">
+            <h3>Approve new members</h3>
+            <p>You'll get a notification when someone signs up or is approved. There may already be a few pending right now that need one of us to approve.</p>
+        </div>
+        <div class="card">
+            <h3>Remove or lapse members</h3>
+            <p>Mark individuals as banned, lapsed, or delete them outright. Most of this lives on individual profiles or the "club view" at the bottom of the Club page.</p>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <span class="section-label">Admin control panel</span>
+    <p class="intro">You may have noticed a shield icon next to the notification bell in the upper right — that's how you get in.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>Pending Approvals</h3>
+            <p>Sign-ups waiting for review. The app is in the public App Store, so we need to be careful to only approve people we actually know are in or joining the club.</p>
+        </div>
+        <div class="card">
+            <h3>Reports</h3>
+            <p>If a user reports content as inappropriate, it shows up here. Apple made me add this; hopefully we never use it.</p>
+        </div>
+        <div class="card">
+            <h3>Safety Terms</h3>
+            <p>What users agree to at sign-up — release of liability and so on. I copied it from the document I signed when I joined; edit as you see fit.</p>
+            <p><span class="heads-up">Heads up</span> &nbsp;Every edit forces the whole club to re-consent.</p>
+        </div>
+        <div class="card">
+            <h3>Invite Code</h3>
+            <p>Bypasses the pending step at sign-up. Pass it to new members during onboarding. Admins can rotate it if it leaks.</p>
+        </div>
+        <div class="card">
+            <h3>Known Issue Banner</h3>
+            <p>Mostly for me. Puts an alert at the top of a few pages when there's a bug affecting the app.</p>
+        </div>
+        <div class="card">
+            <h3>Board Tracking</h3>
+            <p>Tracks requirements and nice-to-haves — swims with the club, swims under 5°, events created. Won't be useful out of season, but handy in October/November to see who met the bar. Have a look and let me know if anything's unclear.</p>
+        </div>
+        <div class="card">
+            <h3>New Announcement</h3>
+            <p>Push an announcement to the whole club. Sends a push notification and pins it at the top of the inbox. Could replace email blasts.</p>
+        </div>
+    </div>
+
+</body>
+</html>
