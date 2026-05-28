@@ -88,6 +88,19 @@
             box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
         .top-card p { margin: 0; font-size: 0.95rem; }
+        .screenshot-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 0.5em 0 1.5em;
+        }
+        .screenshot {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            border: 1px solid rgba(26,122,181,0.12);
+        }
         .divider {
             border: none;
             border-top: 1px solid #d6e3ed;
@@ -126,6 +139,10 @@
 
     <span class="section-label">Admin control panel</span>
     <p class="intro">You may have noticed a shield icon next to the notification bell in the upper right — that's how you get in.</p>
+
+    <div class="screenshot-wrap">
+        <img src="admin-tools-screenshot.png" class="screenshot" alt="The Admin Tools panel inside the NIS Tracker app, listing Pending Approvals, Reports, Safety Terms, Invite Code, Known Issue Banner, Board Tracking, and New Announcement.">
+    </div>
 
     <div class="card-grid">
         <div class="card">
