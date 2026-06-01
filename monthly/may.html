@@ -622,6 +622,14 @@
 
 /* Day-by-day swims + temperature chart */
 .chart-wrap{margin-top:44px;width:100%;max-width:1100px;}
+
+/* Merged "By the numbers" slide — hero-sized comparison grid */
+.compare-grid.hero{margin-top:48px;gap:20px;width:100%;max-width:1100px;}
+.compare-grid.hero .compare-cell{padding:30px 22px;border-radius:20px;box-shadow:var(--shadow);}
+.compare-grid.hero .compare-cell .metric{font-size:14px;margin-bottom:16px;letter-spacing:1.5px;}
+.compare-grid.hero .compare-cell .march{font-size:20px;}
+.compare-grid.hero .compare-cell .arrow{font-size:16px;margin:6px 0;}
+.compare-grid.hero .compare-cell .april{font-size:52px;letter-spacing:-1px;line-height:1;}
 </style>
 </head>
 <body>
@@ -632,29 +640,18 @@
     <div class="corner-mark"><span class="dot">❄</span> NIS Tracker · Monthly</div>
     <div class="snowflake">❄</div>
     <div class="month">May 2026</div>
-    <h1>185 swims. 165.5 kilometres. May.</h1>
+    <h1>May: 185 swims & 165.5 km</h1>
     <div class="tag">A look at how the club showed up in May 2026 — the swims, the new faces, the cold mornings.</div>
     <div class="by-line">From the data</div>
   </section>
 
+  
   <section class="slide slide-section" data-name="By the numbers">
     <div class="corner-mark"><span class="dot">❄</span> May 2026</div>
     <div class="eyebrow">By the numbers</div>
     <h2>May was a breakout month.</h2>
-    <p class="lede">How the club showed up in late spring.</p>
-    <div class="stat-row">
-      <div class="stat"><div class="num">185</div><div class="label">Swims</div></div>
-      <div class="stat"><div class="num">26</div><div class="label">Swimmers</div></div>
-      <div class="stat"><div class="num">165.5<span class="unit">km</span></div><div class="label">Total distance</div></div>
-    </div>
-  </section>
-
-  
-  <section class="slide slide-section" data-name="Compared to last month">
-    <div class="corner-mark"><span class="dot">❄</span> May 2026</div>
-    <div class="eyebrow">Roughly 1.7× the swims, 3.0× the kilometres.</div>
-    <h2>How May stacked up.</h2>
-    <div class="compare-grid">
+    <p class="lede">Roughly 1.7× the swims, 3.0× the kilometres.</p>
+    <div class="compare-grid hero">
       <div class="compare-cell">
         <div class="metric">Swims</div>
         <div class="march">111</div>
@@ -860,7 +857,7 @@
 
 <nav class="nav">
   <button id="prev" aria-label="Previous">←</button>
-  <span class="counter" id="counter">1 / 11</span>
+  <span class="counter" id="counter">1 / 10</span>
   <button id="next" aria-label="Next">→</button>
   <span style="width: 1px; height: 18px; background: var(--divider); margin: 0 4px;"></span>
   <span class="dots" id="dots"></span>
