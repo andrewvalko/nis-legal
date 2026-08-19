@@ -101,6 +101,29 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.10);
             border: 1px solid rgba(26,122,181,0.12);
         }
+        /* Screenshot beside the Club Management cards. The phone is ~607px
+           tall at 280px wide, and five single-column cards land close to the
+           same height, so the two columns finish together. */
+        .split {
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
+            margin-bottom: 1.5em;
+        }
+        .split .screenshot-wrap {
+            flex: 0 0 280px;
+            margin: 0;
+        }
+        .split-body { flex: 1; min-width: 0; }
+        /* The label leads the right-hand column, so it must top-align with the
+           screenshot rather than carry the usual section spacing. */
+        .split-body .section-label { margin-top: 0; }
+        .split-body .card-grid { grid-template-columns: 1fr; }
+        @media (max-width: 760px) {
+            .split { flex-direction: column; gap: 0; }
+            .split .screenshot-wrap { flex: none; align-self: center; margin: 0.5em 0 1.5em; }
+            .split-body .section-label { margin-top: 2em; }
+        }
         .divider {
             border: none;
             border-top: 1px solid #d6e3ed;
@@ -137,11 +160,13 @@
     <span class="section-label">Admin control panel</span>
     <p class="intro">You may have noticed a shield icon next to the notification bell in the upper right — that's how you get in. It's split into two groups: running the club, and running the app.</p>
 
-    <div class="screenshot-wrap">
-        <img src="admin-tools-screenshot.png" class="screenshot" alt="The Admin Tools panel inside the NIS Tracker app. A Club Management group lists Approve Pending Members, Post Announcement, Modify Invite Code, Modify Safety Terms and Review Club Activity. An App Logistics group lists View App Feedback, View Flagged Content and Configure Known Issue.">
-    </div>
+    <div class="split">
+        <div class="screenshot-wrap">
+            <img src="admin-tools-screenshot.png" class="screenshot" alt="The Admin Tools panel inside the NIS Tracker app. A Club Management group lists Approve Pending Members, Post Announcement, Modify Invite Code, Modify Safety Terms and Review Club Activity. An App Logistics group lists View App Feedback, View Flagged Content and Configure Known Issue.">
+        </div>
 
-    <span class="section-label">Club Management</span>
+        <div class="split-body">
+            <span class="section-label">Club Management</span>
 
     <div class="card-grid">
         <div class="card">
@@ -165,6 +190,8 @@
         <div class="card">
             <h3>Review Club Activity</h3>
             <p>Tracks requirements and nice-to-haves — swims with the club, swims under 5&deg;, events created. Won't be useful out of season, but handy in October/November to see who met the bar. Have a look and let me know if anything's unclear.</p>
+        </div>
+            </div>
         </div>
     </div>
 
