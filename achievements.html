@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements — NIS Tracker</title>
+    <style>
+        :root {
+            --bg: #f0f6fa; --card: #fff; --ink: #1a2a3a; --heading: #0d2137;
+            --muted: #3a5068; --line: rgba(26,122,181,0.10); --accent: #1a7ab5;
+            --tag-bg: #e7f1f9; --link: #4a9ecf;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0b1622; --card: #13212f; --ink: #dbe6ef; --heading: #f0f6fa;
+                --muted: #9db2c4; --line: rgba(140,199,240,0.14); --accent: #8cc7f0;
+                --tag-bg: rgba(140,199,240,0.14); --link: #8cc7f0;
+            }
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 980px; margin: 0 auto; padding: 24px 16px;
+            color: var(--ink); line-height: 1.6; background: var(--bg);
+        }
+        a { color: var(--link); }
+        .banner { width: 100%; border-radius: 16px 16px 0 0; display: block; }
+        .top-card {
+            background: var(--card); border-radius: 0 0 16px 16px; padding: 18px 22px;
+            margin-bottom: 1em; border: 1px solid var(--line); border-top: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        h1 { font-size: 1.6rem; margin: 0 0 4px; color: var(--heading); }
+        .top-card p { margin: 0.4em 0 0; font-size: 0.95rem; color: var(--muted); }
+        .section-label {
+            display: inline-block; color: #fff;
+            background: linear-gradient(135deg, #142645, #8CC7F0);
+            font-size: 0.8rem; font-weight: 600; padding: 4px 14px;
+            border-radius: 20px; margin: 2em 0 1em; letter-spacing: 0.02em;
+        }
+        .rules {
+            background: var(--card); border-radius: 16px; padding: 16px 22px;
+            border: 1px solid var(--line); box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .rules ul { margin: 0; padding-left: 1.1em; }
+        .rules li { font-size: 0.9rem; margin: 6px 0; color: var(--ink); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+        @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+        .card {
+            background: var(--card); border-radius: 16px; padding: 16px 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--line);
+        }
+        .card h3 { font-size: 1rem; margin: 0 0 4px; color: var(--heading); }
+        .card .count { font-weight: 500; color: var(--muted); font-size: 0.85rem; margin-left: 4px; }
+        .card .note { font-size: 0.82rem; color: var(--muted); margin: 0 0 8px; line-height: 1.5; }
+        .card ul { list-style: none; margin: 0; padding: 0; }
+        .card li { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); }
+        .card li:first-child { border-top: none; }
+        .emoji { font-size: 1.35rem; line-height: 1.3; width: 1.6rem; text-align: center; flex: none; }
+        .text { min-width: 0; }
+        .name { font-weight: 600; font-size: 0.92rem; color: var(--heading); }
+        .tag {
+            display: inline-block; font-size: 0.68rem; font-weight: 600; color: var(--accent);
+            background: var(--tag-bg); padding: 1px 8px; border-radius: 10px;
+            margin-left: 8px; vertical-align: 2px; letter-spacing: 0.02em;
+        }
+        .desc { display: block; font-size: 0.85rem; color: var(--muted); line-height: 1.45; }
+        footer { margin: 2.5em 0 1em; font-size: 0.85rem; color: var(--muted); text-align: center; }
+    </style>
+</head>
+<body>
+    <img src="banner.png" class="banner" alt="NIS Tracker">
+    <div class="top-card">
+        <h1>Achievements</h1>
+        <p>Every badge in NIS Tracker: 41 you earn yourself and 39 the club earns together. A badge appears on the swim that earns it, and yours collect on your profile.</p>
+    </div>
+
+    <span class="section-label">What counts</span>
+    <div class="rules">
+        <ul>
+            <li><strong>Swims at Sandkaj.</strong> Swims at other places, and swims labelled pool or wetsuit, are in your log but earn no badges. Dips count like any other swim.</li>
+            <li><strong>1 October to 30 April.</strong> Swims from May to September earn nothing. The one exception is First Plunge, which your first Sandkaj swim earns any time of year.</li>
+            <li><strong>Every season, a fresh start.</strong> Badges marked “Every season” start over on 1 October and can be earned again. Each one carries its season, like “25/26”.</li>
+            <li><strong>Private swims</strong> count toward your own badges, but not toward the club’s.</li>
+        </ul>
+    </div>
+
+    <span class="section-label">Your achievements · 41</span>
+    <div class="grid">
+<section class="card">
+<h3>Swim count <span class="count">9</span></h3>
+<p class="note">Official swims you&#x27;ve logged. 500 swims and up show as a celebration on the swim that gets you there.</p>
+<ul><li><span class="emoji" aria-hidden="true">✨</span><span class="text"><span class="name">First Plunge</span><span class="desc">First official swim with NIS</span></span></li><li><span class="emoji" aria-hidden="true">⭐</span><span class="text"><span class="name">Getting Hooked</span><span class="tag">Every season</span><span class="desc">10 official swims in a season</span></span></li><li><span class="emoji" aria-hidden="true">🌟</span><span class="text"><span class="name">Quarter Century</span><span class="desc">Completed 25 official swims</span></span></li><li><span class="emoji" aria-hidden="true">🏅</span><span class="text"><span class="name">Half Century</span><span class="desc">Completed 50 official swims</span></span></li><li><span class="emoji" aria-hidden="true">🏆</span><span class="text"><span class="name">Century Club</span><span class="desc">Completed 100 official swims</span></span></li><li><span class="emoji" aria-hidden="true">🥇</span><span class="text"><span class="name">500 Swims</span><span class="desc">Completed 500 official swims</span></span></li><li><span class="emoji" aria-hidden="true">👑</span><span class="text"><span class="name">1000 Swims</span><span class="desc">Completed 1,000 official swims</span></span></li><li><span class="emoji" aria-hidden="true">🔱</span><span class="text"><span class="name">1500 Swims</span><span class="desc">Completed 1,500 official swims</span></span></li><li><span class="emoji" aria-hidden="true">♾️</span><span class="text"><span class="name">2000 Swims</span><span class="desc">Completed 2,000 official swims</span></span></li></ul>
+</section>
+<section class="card">
+<h3>One long swim <span class="count">5</span></h3>
+<p class="note">Distance in a single swim. A mile in water under 5°C is an Ice Mile; in warmer water, or with no temperature logged, it&#x27;s a Cold Mile. One swim earns one or the other.</p>
+<ul><li><span class="emoji" aria-hidden="true">↔️</span><span class="text"><span class="name">First Kilometer</span><span class="desc">Swam 1,000m in a single swim</span></span></li><li><span class="emoji" aria-hidden="true">🏊‍♂️</span><span class="text"><span class="name">Big Dip</span><span class="tag">Every season</span><span class="desc">A single swim of 1km or more</span></span></li><li><span class="emoji" aria-hidden="true">📏</span><span class="text"><span class="name">Cold Mile</span><span class="tag">Every season</span><span class="desc">A single swim of 1.6km or more in water of 5°C or warmer</span></span></li><li><span class="emoji" aria-hidden="true">🧊</span><span class="text"><span class="name">Ice Mile</span><span class="tag">Every season</span><span class="desc">A single swim of 1.6km or more in sub-5°C water</span></span></li><li><span class="emoji" aria-hidden="true">🏁</span><span class="text"><span class="name">Marathon Dip</span><span class="tag">Every season</span><span class="desc">A single swim of 2km or more</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Total distance <span class="count">5</span></h3>
+<p class="note">Everything you&#x27;ve swum, added up.</p>
+<ul><li><span class="emoji" aria-hidden="true">🏊</span><span class="text"><span class="name">Harbor Lap</span><span class="desc">Swam 5,000m total distance</span></span></li><li><span class="emoji" aria-hidden="true">🌊</span><span class="text"><span class="name">Channel Swimmer</span><span class="desc">Swam 10,000m total distance</span></span></li><li><span class="emoji" aria-hidden="true">⛵</span><span class="text"><span class="name">Nordic Navigator</span><span class="desc">Swam 20,000m total distance</span></span></li><li><span class="emoji" aria-hidden="true">🌍</span><span class="text"><span class="name">Oresund Dreamer</span><span class="desc">Swam 30,000m total distance</span></span></li><li><span class="emoji" aria-hidden="true">🗺️</span><span class="text"><span class="name">100 Kilometers</span><span class="desc">Swam 100,000m total distance</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Cold water distance <span class="count">5</span></h3>
+<p class="note">Distance swum in water under 5°C, counted fresh each season.</p>
+<ul><li><span class="emoji" aria-hidden="true">❄️</span><span class="text"><span class="name">Cold Start</span><span class="tag">Every season</span><span class="desc">Swam 2,000m in sub-5°C water this season</span></span></li><li><span class="emoji" aria-hidden="true">🌬️</span><span class="text"><span class="name">Frozen Wake</span><span class="tag">Every season</span><span class="desc">Swam 4,000m in sub-5°C water this season</span></span></li><li><span class="emoji" aria-hidden="true">🏔️</span><span class="text"><span class="name">Glacier Trail</span><span class="tag">Every season</span><span class="desc">Swam 6,000m in sub-5°C water this season</span></span></li><li><span class="emoji" aria-hidden="true">🌪️</span><span class="text"><span class="name">Arctic Current</span><span class="tag">Every season</span><span class="desc">Swam 8,000m in sub-5°C water this season</span></span></li><li><span class="emoji" aria-hidden="true">⚡</span><span class="text"><span class="name">Polar Express</span><span class="tag">Every season</span><span class="desc">Swam 10,000m in sub-5°C water this season</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Coldest water <span class="count">2</span></h3>
+<p class="note">Your first swim below each temperature.</p>
+<ul><li><span class="emoji" aria-hidden="true">🌡️</span><span class="text"><span class="name">Ice Veins</span><span class="desc">First swim below 2.5°C</span></span></li><li><span class="emoji" aria-hidden="true">🥶</span><span class="text"><span class="name">Absolute Zero</span><span class="desc">First swim below 1°C</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Time of day <span class="count">3</span></h3>
+<ul><li><span class="emoji" aria-hidden="true">🌄</span><span class="text"><span class="name">Dawn Patrol</span><span class="desc">First swim before 7am</span></span></li><li><span class="emoji" aria-hidden="true">🌅</span><span class="text"><span class="name">Early Bird</span><span class="tag">Every season</span><span class="desc">10 swims before 9am this season</span></span></li><li><span class="emoji" aria-hidden="true">🦉</span><span class="text"><span class="name">Night Owl</span><span class="tag">Every season</span><span class="desc">10 swims after 5pm this season</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Streaks <span class="count">4</span></h3>
+<p class="note">Weeks in a row with at least one swim.</p>
+<ul><li><span class="emoji" aria-hidden="true">🛡️</span><span class="text"><span class="name">Ice Warrior</span><span class="tag">Every season</span><span class="desc">4-week swimming streak this season</span></span></li><li><span class="emoji" aria-hidden="true">⛰️</span><span class="text"><span class="name">Frost Giant</span><span class="tag">Every season</span><span class="desc">8-week swimming streak this season</span></span></li><li><span class="emoji" aria-hidden="true">🪓</span><span class="text"><span class="name">Winter Viking</span><span class="tag">Every season</span><span class="desc">12-week swimming streak this season</span></span></li><li><span class="emoji" aria-hidden="true">⚔️</span><span class="text"><span class="name">Ragnarok Survivor</span><span class="tag">Every season</span><span class="desc">26-week full-season streak</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Swimming often <span class="count">4</span></h3>
+<ul><li><span class="emoji" aria-hidden="true">🔁</span><span class="text"><span class="name">Double Dip</span><span class="desc">2 swims in one day</span></span></li><li><span class="emoji" aria-hidden="true">🔥</span><span class="text"><span class="name">Iron Week</span><span class="desc">5+ swims in one calendar week</span></span></li><li><span class="emoji" aria-hidden="true">📅</span><span class="text"><span class="name">Weekend Warrior</span><span class="tag">Every season</span><span class="desc">10 weekend swims this season</span></span></li><li><span class="emoji" aria-hidden="true">🗓️</span><span class="text"><span class="name">Full Season</span><span class="tag">Every season</span><span class="desc">At least 1 swim each month Oct–Mar of one season</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Swim buddies <span class="count">4</span></h3>
+<p class="note">Different members you&#x27;ve swum with this season, counted from the people tagged on your swims.</p>
+<ul><li><span class="emoji" aria-hidden="true">👥</span><span class="text"><span class="name">Club Friend</span><span class="tag">Every season</span><span class="desc">Swam with 20 different people this season</span></span></li><li><span class="emoji" aria-hidden="true">🫂</span><span class="text"><span class="name">Half the Club</span><span class="tag">Every season</span><span class="desc">Swam with 30 different people this season</span></span></li><li><span class="emoji" aria-hidden="true">🪩</span><span class="text"><span class="name">Well Connected</span><span class="tag">Every season</span><span class="desc">Swam with 40 different people this season</span></span></li><li><span class="emoji" aria-hidden="true">💫</span><span class="text"><span class="name">Club Legend</span><span class="tag">Every season</span><span class="desc">Swam with 50 different people this season</span></span></li></ul>
+</section>
+    </div>
+
+    <span class="section-label">Club achievements · 39</span>
+    <div class="rules" style="margin-bottom:12px">
+        <ul>
+            <li>Club badges count everyone’s swims together. Each one lands on the swim that crosses the line, so whoever logs the club’s 1,000th swim gets The Thousandth Dip on theirs.</li>
+        </ul>
+    </div>
+    <div class="grid">
+<section class="card">
+<h3>Club swims <span class="count">8</span></h3>
+<p class="note">Official swims logged by everyone together.</p>
+<ul><li><span class="emoji" aria-hidden="true">💯</span><span class="text"><span class="name">First Hundred</span><span class="desc">The club logged 100 swims</span></span></li><li><span class="emoji" aria-hidden="true">🖐️</span><span class="text"><span class="name">High Five Hundred</span><span class="desc">The club logged 500 swims</span></span></li><li><span class="emoji" aria-hidden="true">🙌</span><span class="text"><span class="name">The Thousandth Dip</span><span class="desc">The club logged 1,000 swims</span></span></li><li><span class="emoji" aria-hidden="true">🎉</span><span class="text"><span class="name">Twenty-Five Hundred</span><span class="desc">The club logged 2,500 swims</span></span></li><li><span class="emoji" aria-hidden="true">⭐</span><span class="text"><span class="name">Five Thousand Strong</span><span class="desc">The club logged 5,000 swims</span></span></li><li><span class="emoji" aria-hidden="true">🌟</span><span class="text"><span class="name">Ten Thousand Dips</span><span class="desc">The club logged 10,000 swims</span></span></li><li><span class="emoji" aria-hidden="true">🏆</span><span class="text"><span class="name">Twenty Thousand</span><span class="desc">The club logged 20,000 swims</span></span></li><li><span class="emoji" aria-hidden="true">👑</span><span class="text"><span class="name">Thirty Thousand</span><span class="desc">The club logged 30,000 swims</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Club swims under 5°C <span class="count">12</span></h3>
+<p class="note">All time, plus a set that starts again each season.</p>
+<ul><li><span class="emoji" aria-hidden="true">❄️</span><span class="text"><span class="name">Hundred Below Five</span><span class="desc">The club logged 100 sub-5°C swims</span></span></li><li><span class="emoji" aria-hidden="true">❄️</span><span class="text"><span class="name">Five Hundred Frozen</span><span class="desc">The club logged 500 sub-5°C swims</span></span></li><li><span class="emoji" aria-hidden="true">🧊</span><span class="text"><span class="name">Thousand Cold Dips</span><span class="desc">The club logged 1,000 sub-5°C swims</span></span></li><li><span class="emoji" aria-hidden="true">🧊</span><span class="text"><span class="name">Fifteen Hundred Frozen</span><span class="desc">The club logged 1,500 sub-5°C swims</span></span></li><li><span class="emoji" aria-hidden="true">🥶</span><span class="text"><span class="name">Two Thousand Cold</span><span class="desc">The club logged 2,000 sub-5°C swims</span></span></li><li><span class="emoji" aria-hidden="true">🥶</span><span class="text"><span class="name">Five Thousand Frozen</span><span class="desc">The club logged 5,000 sub-5°C swims</span></span></li><li><span class="emoji" aria-hidden="true">🥶</span><span class="text"><span class="name">Ten Thousand Cold</span><span class="desc">The club logged 10,000 sub-5°C swims</span></span></li><li><span class="emoji" aria-hidden="true">❄️</span><span class="text"><span class="name">Hundred Below Five (Season)</span><span class="tag">Every season</span><span class="desc">The club logged 100 sub-5°C swims this season</span></span></li><li><span class="emoji" aria-hidden="true">❄️</span><span class="text"><span class="name">Five Hundred Frozen (Season)</span><span class="tag">Every season</span><span class="desc">The club logged 500 sub-5°C swims this season</span></span></li><li><span class="emoji" aria-hidden="true">🧊</span><span class="text"><span class="name">Thousand Cold Dips (Season)</span><span class="tag">Every season</span><span class="desc">The club logged 1,000 sub-5°C swims this season</span></span></li><li><span class="emoji" aria-hidden="true">🧊</span><span class="text"><span class="name">Fifteen Hundred Frozen (Season)</span><span class="tag">Every season</span><span class="desc">The club logged 1,500 sub-5°C swims this season</span></span></li><li><span class="emoji" aria-hidden="true">🥶</span><span class="text"><span class="name">Two Thousand Cold (Season)</span><span class="tag">Every season</span><span class="desc">The club logged 2,000 sub-5°C swims this season</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Club distance <span class="count">7</span></h3>
+<p class="note">Distance swum by everyone together, from the Øresund to a thousand kilometres.</p>
+<ul><li><span class="emoji" aria-hidden="true">🌉</span><span class="text"><span class="name">Øresund Crossing</span><span class="desc">The club swam the Øresund (Denmark → Sweden)</span></span></li><li><span class="emoji" aria-hidden="true">🌊</span><span class="text"><span class="name">Channel Crossing</span><span class="desc">The club swam the English Channel</span></span></li><li><span class="emoji" aria-hidden="true">🏅</span><span class="text"><span class="name">Marathon Club</span><span class="desc">The club swam a marathon</span></span></li><li><span class="emoji" aria-hidden="true">🧭</span><span class="text"><span class="name">Into Six Figures</span><span class="desc">The club swam 100 kilometers</span></span></li><li><span class="emoji" aria-hidden="true">🛰️</span><span class="text"><span class="name">Quarter Million</span><span class="desc">The club swam 250 kilometers</span></span></li><li><span class="emoji" aria-hidden="true">🚀</span><span class="text"><span class="name">Half a Megameter</span><span class="desc">The club swam 500 kilometers</span></span></li><li><span class="emoji" aria-hidden="true">🌎</span><span class="text"><span class="name">The Megameter</span><span class="desc">The club swam 1,000 kilometers</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Club distance under 5°C <span class="count">8</span></h3>
+<p class="note">All time, plus a set that starts again each season.</p>
+<ul><li><span class="emoji" aria-hidden="true">🧊</span><span class="text"><span class="name">Ice Ten K</span><span class="desc">The club swam 10km in sub-5°C water</span></span></li><li><span class="emoji" aria-hidden="true">🌉</span><span class="text"><span class="name">Frozen Øresund</span><span class="desc">The club swam the Øresund in sub-5°C water</span></span></li><li><span class="emoji" aria-hidden="true">🏅</span><span class="text"><span class="name">Ice Marathon</span><span class="desc">The club swam a marathon in sub-5°C water</span></span></li><li><span class="emoji" aria-hidden="true">⚡</span><span class="text"><span class="name">Polar Century</span><span class="desc">The club swam 100km in sub-5°C water</span></span></li><li><span class="emoji" aria-hidden="true">🧊</span><span class="text"><span class="name">Ice Ten K (Season)</span><span class="tag">Every season</span><span class="desc">The club swam 10km in sub-5°C water this season</span></span></li><li><span class="emoji" aria-hidden="true">🌉</span><span class="text"><span class="name">Frozen Øresund (Season)</span><span class="tag">Every season</span><span class="desc">The club swam the Øresund in sub-5°C water this season</span></span></li><li><span class="emoji" aria-hidden="true">🏅</span><span class="text"><span class="name">Ice Marathon (Season)</span><span class="tag">Every season</span><span class="desc">The club swam a marathon in sub-5°C water this season</span></span></li><li><span class="emoji" aria-hidden="true">⚡</span><span class="text"><span class="name">Polar Century (Season)</span><span class="tag">Every season</span><span class="desc">The club swam 100km in sub-5°C water this season</span></span></li></ul>
+</section>
+<section class="card">
+<h3>Club records <span class="count">4</span></h3>
+<p class="note">The club&#x27;s best swims of all time. Records start on 1 October 2027, once there are two full seasons to measure against.</p>
+<ul><li><span class="emoji" aria-hidden="true">🌡️</span><span class="text"><span class="name">Ice Breaker</span><span class="desc">Coldest swim in club history</span></span></li><li><span class="emoji" aria-hidden="true">↔️</span><span class="text"><span class="name">Long Haul</span><span class="desc">Longest swim (distance) in club history</span></span></li><li><span class="emoji" aria-hidden="true">⏱️</span><span class="text"><span class="name">Marathon Swimmer</span><span class="desc">Longest swim (time) in club history</span></span></li><li><span class="emoji" aria-hidden="true">🌅</span><span class="text"><span class="name">First Light</span><span class="desc">Earliest morning swim in club history</span></span></li></ul>
+</section>
+    </div>
+
+    <footer>Updated 29 October 2026 · <a href="index.html">NIS Tracker</a> · <a href="release-notes.html">Release history</a></footer>
+</body>
+</html>
